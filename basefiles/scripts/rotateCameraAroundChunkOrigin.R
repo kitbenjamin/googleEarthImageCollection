@@ -52,13 +52,13 @@ for(i in 1:length(cameraHeightASL)){
                                 "azimuth" = round(azimuth, 2),
                                 "roll" = 0,
                                 "Z_ground" = ASLheight,
-                                "chunkCentre" = paste0('[', cx, ', ', cy, ', ', ASLheight, ']'))
+                                "intervalCentre" = paste0('[', cx, ', ', cy, ', ', ASLheight, ']'))
   }
 }
 
 DATOUT <- do.call(rbind, DAT)
 DATOUT['Created'] <- FALSE
-DATOUT['ChunkNo'] <- nThChunk
+DATOUT['intervalNo'] <- nThChunk
 
 firstImageID <- ((nThChunk) * nrow(DATOUT)) 
 imageIDs <- seq(firstImageID, length.out = nrow(DATOUT), by = 1)
@@ -67,8 +67,8 @@ DATOUT["Label"] <- paste("movie-", imageIDs, ".png", sep = "")
 
 DATOUT <- setDT(DATOUT)
 
-OUTFILE <- 'chunk_table_original.csv'
-OUTPATH <- 'Chunks'
+OUTFILE <- 'imageIntervalTable.csv'
+OUTPATH <- 'imageInterval'
 if(!dir.exists(OUTPATH)) dir.create(OUTPATH, recursive = TRUE)
 write.table(x = DATOUT, file = file.path(OUTPATH, OUTFILE), sep = ",", col.names = !file.exists(file.path(OUTPATH, OUTFILE)), 
             append = T, row.names = FALSE)

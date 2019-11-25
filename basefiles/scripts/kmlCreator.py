@@ -14,23 +14,23 @@ import re
 import yaml
 #%%
 #set up directories
-chunkfilepath = os.path.join('Chunks')
-if os.path.exists(chunkfilepath) == True:
-    shutil.rmtree(chunkfilepath)
-    os.makedirs('Chunks')
+imgintfilepath = os.path.join('imageInterval')
+if os.path.exists(imgintfilepath) == True:
+    shutil.rmtree(imgintfilepath)
+    os.makedirs('imageInterval')
 else:
-    os.makedirs('Chunks')
+    os.makedirs('imageInterval')
 
-if os.path.exists('out') == False:
-    os.makedirs('out')
+if os.path.exists('kmlFiles') == False:
+    os.makedirs('kmlFiles')
     
 if os.path.exists('googleEarthOut') == False:
     os.makedirs('googleEarthOut')
 #%%
 # gets camera metadata and writes to chunk csv
-def create_chunklist(latPointsGrid, range0, altitudeMode, lookAtDuration):
+def create_imageInterval(latPointsGrid, range0, altitudeMode, lookAtDuration):
     # get the camera positions required 
-    chunklist=[]
+    imageInterval=[]
     #create chunklist
     for i in xrange(0, len(latPointsGrid)):
         for v in xrange(0, len(latPointsGrid[i])):
@@ -40,18 +40,19 @@ def create_chunklist(latPointsGrid, range0, altitudeMode, lookAtDuration):
             d['range0'] = range0
             d['altitudeMode'] = altitudeMode
             d['lookAtDuration'] = lookAtDuration
-            chunklist.append(d)
-    return chunklist
+            imageInterval.append(d)
+    return imageInterval
 #%%      
-def create_chunck_csv(chunklist):    
+def create_imageInterval_csv(imageInterval):    
     #create the original chunk csv
     #nThChunk - track the chunk number that we are on - need this to keep track of the camera ID numbers
     nThChunk = -1
     
     #create a master csv that has camera and image imrmation 
-    for chunk in chunklist:
+    for chunk in imageInterval:
         nThChunk += 1
         chunk['longitude'], chunk['latitude'] = myProj(chunk['longitudeUTM'], chunk['latitudeUTM'], inverse = True)
+        print('Interval number: ' + str(nThChunk) +'/'+str(len(imageInterval) - 1))
         print(chunk)
         #run R script given the defined parameters for the current chunk - NEEDS UTM COORDINATES
         args = [str(chunk['longitudeUTM']), str(chunk['latitudeUTM']) , str(zenithAngles), str(pathLengths), 
@@ -60,8 +61,8 @@ def create_chunck_csv(chunklist):
         popenCmdwArgs = list(np.append(popenCmd, args))
         rotate = subprocess.Popen(popenCmdwArgs, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True)
         out, err = rotate.communicate()
-        print(out)
-        print(err)
+        #print(out)
+        #print(err)
 #%%
 # function to create sequence of lats/lons
 def UTMseq(start, end, step):
@@ -85,14 +86,14 @@ def init_kml(KMLname):
     )
     return tour_doc
 #%%
-def create_tour_doc(tour_doc, row, chunklist):
+def create_tour_doc(tour_doc, row, imageInterval):
     camHeight  = row['Z']
     longitude, latitude = myProj(row['X'], row['Y'], inverse = True)
     azimuth = row['azimuth']
     zenith = row['zenith']
     
-    chunkNo = row['ChunkNo']
-    corrChunk = chunklist[int(chunkNo)]
+    intervalNo = row['intervalNo']
+    corrChunk = imageInterval[int(intervalNo)]
     # define a variable for the Google Extensions namespace URL string
     gxns = '{' + nsmap['gx'] + '}'
     #fly to the subChunk with the given subChunk parameters
@@ -115,7 +116,7 @@ def create_tour_doc(tour_doc, row, chunklist):
 #%%
 def write_kml(tour_doc, KMLname):
     #output a KML file (named based on the Python script)
-    outFileName = 'out/' + str(KMLname + '.kml')
+    outFileName = 'kmlFiles/' + str(KMLname + '.kml')
     outfile = open(outFileName, 'w')
     outfile.write(etree.tostring(tour_doc, pretty_print = True))
     outfile.close()
@@ -123,19 +124,19 @@ def write_kml(tour_doc, KMLname):
 #%%
 # moves all created images into their 'run' folders then move the chunck table also
 def moveImagesToRun(n):
-    imgsCreated = os.listdir('googleEarthOUT')
-    if os.path.exists('googleEarthOUT/run'+str(n)+'') == False:
-        os.mkdir('googleEarthOUT/run'+str(n)+'')
+    imgsCreated = os.listdir('googleEarthOut')
+    if os.path.exists('googleEarthOut/run'+str(n)+'') == False:
+        os.mkdir('googleEarthOut/run'+str(n)+'')
     for i in imgsCreated:
         if '.png' in i:
-            shutil.move('googleEarthOUT/'+i+'', 'googleEarthOUT/run'+str(n)+'')
+            shutil.move('googleEarthOut/'+i+'', 'googleEarthOut/run'+str(n)+'')
     
-    chunkCSVs = os.listdir('Chunks')
-    for i in chunkCSVs:
+    imgCSVs = os.listdir('imageInterval')
+    for i in imgCSVs:
         sp = re.split("['_', '.']", i)
         if 'run' in sp[-2]:
-            imgDir = 'googleEarthOUT/'+sp[-2]
-            shutil.move('Chunks/'+i, imgDir)
+            imgDir = 'googleEarthOut/'+sp[-2]
+            shutil.move('imageInterval/'+i, imgDir)
 #%% 
 # runs google earth with a  kml file, based on what is to be completed
 def get_GE_images(KMLname, toBeDone, n, is_rerun = False):
@@ -153,17 +154,17 @@ def get_GE_images(KMLname, toBeDone, n, is_rerun = False):
         tour_doc = init_kml(KMLname)
         
         # create the new tour doc
-        toBeDoneGroup = toBeDone.groupby('ChunkNo')
+        toBeDoneGroup = toBeDone.groupby('intervalNo')
         for name, group in toBeDoneGroup:
             for i, row in group.iterrows():
-                create_tour_doc(tour_doc, row, chunklist)
+                create_tour_doc(tour_doc, row, imageInterval)
         
         # create new kml
         write_kml(tour_doc, KMLname)
         
         #get the kml path
         wd = os.getcwd()
-        kmlPath =  wd + '\\out\\'+KMLname+'.kml'
+        kmlPath =  wd + '\\kmlFiles\\'+KMLname+'.kml'
         
         #open google earth and check for google earth crash
         crashTest = subprocess.Popen([RscriptLoc + str('Rscript.exe'), '--vanilla', '--no-save', 'scripts/GEcrashTest.R', GEdir, kmlPath, str(GEtimeout)],
@@ -204,18 +205,18 @@ def get_GE_images(KMLname, toBeDone, n, is_rerun = False):
                 print( 'unrecognised input, assuming movie maker unfinished. Google Earth will be reopened.')
                 
         #check what has been created 
-        imgsCreated = os.listdir('googleEarthOUT')
-        chunkTab2 = toBeDone
+        imgsCreated = os.listdir('googleEarthOut')
+        imgTab2 = toBeDone.copy()
         
-        for i, row in chunkTab2.iterrows():
+        for i, row in imgTab2.iterrows():
             if row['Label'] in imgsCreated:
-                chunkTab2.at[i, 'Created'] = True
+                imgTab2.at[i, 'Created'] = True
         
         #use created files to decide what is left to do
-        chunkTabComplete = chunkTab2.loc[chunkTab2['Created'] == True]
-        chunkTabComplete.to_csv('Chunks/chunk_table_run'+str(n)+'.csv', header = True, index = False)
+        imgTabComplete = imgTab2.loc[imgTab2['Created'] == True]
+        imgTabComplete.to_csv('imageInterval/imageIntervalTable_run'+str(n)+'.csv', header = True, index = False)
                                 
-        toBeDoneNext = chunkTab2.loc[chunkTab2['Created'] == False]
+        toBeDoneNext = imgTab2.loc[imgTab2['Created'] == False]
         
         # move images 
         moveImagesToRun(n)
@@ -306,15 +307,15 @@ else:
         
 #%%   
 #write the original chunk file with required camera metadata
-chunklist = create_chunklist(latPointsGrid, range0, altitudeMode, lookAtDuration)
-create_chunck_csv(chunklist)
+imageInterval = create_imageInterval(latPointsGrid, range0, altitudeMode, lookAtDuration)
+create_imageInterval_csv(imageInterval)
 #%%
 # read in this file
-chunkTab = pd.read_csv('Chunks/chunk_table_original.csv')
+imgTab = pd.read_csv('imageInterval/imageIntervalTable.csv')
 #n = 0 as is run zero
 n = 0
 # the first run
-rerun, toBeDone = get_GE_images(KMLname, chunkTab, n, is_rerun = False)
+rerun, toBeDone = get_GE_images(KMLname, imgTab, n, is_rerun = False)
 #%%
 #keep running until rerun = False
 if len(toBeDone) > 0:

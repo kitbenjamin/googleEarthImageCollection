@@ -5,11 +5,11 @@ require(ps)
 args <- commandArgs(trailingOnly = TRUE)
 
 GEexe <- args[1]
-print(paste('Google Earth location: ', GEexe))
+#print(paste('Google Earth location: ', GEexe))
 kmlPath <-  args[2]
-print(paste('The KML file is: ', kmlPath))
+#print(paste('The KML file is: ', kmlPath))
 timeout <- args[3]
-print(paste('Time google erath will run before timeout: ', timeout))
+#print(paste('Time google earth will run before timeout: ', timeout))
 timeout = as.numeric(timeout)
 
 #Open google earth with kml file
@@ -17,7 +17,7 @@ print('Opening google earth')
 p <- process$new(command = GEexe, kmlPath)
 p_ps <- p$as_ps_handle()
 PID <- ps::ps_pid(p_ps)
-print(paste("GE process ID is:", PID))
+#print(paste("GE process ID is:", PID))
 
 # loop until timeout reached
 for (i in 1:(timeout)) {

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-import pyproj
 Created on Mon Oct  7 16:27:52 2019
 
 @author: kitbe
@@ -48,7 +47,7 @@ def getPlaneAdjPoint(point1, point2, point3, camera):
     si = -plane_normal.dot(planeToLine) / planeNormDotLine
     # work out coordinates of point (w + si*u + planepoint)
     adjPoint = (planeToLine + (si * camTo1)) + point1
-    return adjPoint
+    return list(adjPoint)
 #%%
 # maths based from http://tutorial.math.lamar.edu/Classes/CalcIII/EqnsOfPlanes.aspx
 # find the 'theoretical' height of the central point i.e the height if the topography was 
@@ -129,20 +128,20 @@ def createKML(df, run, adjusted):
         outfile.close()
 #%%
 def assertSameCoords(dataframe, elevations, index, noDP):
-    assert float(elevations[index][0]) == round(dataframe.loc[index, 'central_lat'], noDP[0]) and float(elevations[index][1]) == round(dataframe.loc[index, 'central_lon'], noDP[1])
-    assert float(elevations[index][3]) == round(dataframe.loc[index, 'r1sl_lat'], noDP[2]) and float(elevations[index][4]) == round(dataframe.loc[index, 'r1sl_lon'], noDP[3])
-    assert float(elevations[index][6]) == round(dataframe.loc[index, 'r2sl_lat'], noDP[4]) and float(elevations[index][7]) == round(dataframe.loc[index, 'r2sl_lon'], noDP[5])
-    assert float(elevations[index][9]) == round(dataframe.loc[index, 'r1sr_lat'], noDP[6]) and float(elevations[index][10]) == round(dataframe.loc[index, 'r1sr_lon'], noDP[7])
-    assert float(elevations[index][12]) == round(dataframe.loc[index, 'r2sr_lat'], noDP[8]) and float(elevations[index][13]) == round(dataframe.loc[index, 'r2sr_lon'], noDP[9])
+    assert abs(float(elevations[index][0]) - round(dataframe.loc[index, 'central_lat'], noDP[0])) < 10**noDP[0] and abs(float(elevations[index][1]) - round(dataframe.loc[index, 'central_lon'], noDP[1])) < 10**noDP[1]
+    assert abs(float(elevations[index][3]) - round(dataframe.loc[index, 'r1sl_lat'], noDP[2])) < 10**noDP[2] and abs(float(elevations[index][4]) - round(dataframe.loc[index, 'r1sl_lon'], noDP[3])) < 10**noDP[3]
+    assert abs(float(elevations[index][6]) - round(dataframe.loc[index, 'r2sl_lat'], noDP[4])) < 10**noDP[4] and abs(float(elevations[index][7]) - round(dataframe.loc[index, 'r2sl_lon'], noDP[5])) < 10**noDP[5]
+    assert abs(float(elevations[index][9]) - round(dataframe.loc[index, 'r1sr_lat'], noDP[6])) < 10**noDP[6] and abs(float(elevations[index][10]) - round(dataframe.loc[index, 'r1sr_lon'], noDP[7])) < 10**noDP[7]
+    assert abs(float(elevations[index][12]) - round(dataframe.loc[index, 'r2sr_lat'], noDP[8])) < 10**noDP[8] and abs(float(elevations[index][13]) - round(dataframe.loc[index, 'r2sr_lon'], noDP[9])) < 10**noDP[9]
 
 #%%
 #import data 
 runs = os.listdir('googleEarthOut')
 firstRun = runs[0]
-imgMeta = pd.read_csv('googleEarthOut/'+firstRun+'/chunk_table_'+firstRun+'.csv')
+imgMeta = pd.read_csv('googleEarthOut/'+firstRun+'/imageIntervalTable_'+firstRun+'.csv')
 imgMeta['run'] = firstRun
 for i in runs[1:]:
-    runDF = pd.read_csv('googleEarthOut/'+i+'/chunk_table_'+i+'.csv')
+    runDF = pd.read_csv('googleEarthOut/'+i+'/imageIntervalTable_'+i+'.csv')
     runDF['run'] = i
     imgMeta = pd.concat([imgMeta, runDF], axis = 0, ignore_index=True)
     
@@ -388,8 +387,6 @@ imgMeta3 = imgMeta3.drop([u'central_lat', u'central_lon', u'central_elev', u'r1s
 # 
 #%%
 # write to a csv 
-if os.path.exists('imageMeta') == False:
-     os.mkdir('imageMeta')
-imgMeta3.to_csv('imageMeta/viewDomains.csv')
+imgMeta3.to_csv('imageInterval/imageViewDomains.csv')
 #%%
 print('Process complete')
