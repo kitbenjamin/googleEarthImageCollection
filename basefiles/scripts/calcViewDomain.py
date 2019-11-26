@@ -10,130 +10,13 @@ from __future__ import division
 import pandas as pd
 import numpy as np
 import subprocess
-import pyproj
 import os
 import math
-from pykml.factory import KML_ElementMaker as KML
-from pykml.factory import GX_ElementMaker as GX
-from lxml import etree
-import yaml
 #%%
-# calculate distance from a camera to a point on the ground given the angle of the camera 
-def camToGround(angles, heights):
-    return np.tan(np.radians(angles)) * heights
-#%%
-# uses the distance from the camera and its angle to calculate the x, y (easting, northing) of the point
-def convToCartesian(x, y, cDistance, theta):
-    return x + cDistance*np.cos(np.radians(theta)),  y + cDistance*np.sin(np.radians(theta))
-#%%
-def conv_lonlat(df, series, index, pointString):
-    df.at[index, pointString +'_lat'] = myProj(series[pointString][0], series[pointString][1], inverse = True)[1]
-    df.at[index, pointString +'_lon'] = myProj(series[pointString][0], series[pointString][1], inverse = True)[0]
-#%%
-#method from: http://geomalgorithms.com/a05-_intersect-1.html
-#cheers: https://gist.github.com/TimSC/8c25ca941d614bf48ebba6b473747d72
-def getPlaneAdjPoint(point1, point2, point3, camera):
-    # get the normal to the plane of the three points (n)
-    plane_normal =  np.cross(np.subtract(point1, point2), np.subtract(point1, point3))
-    #get the point1 (where height assumed to be zero)
-    currentPoint1 = np.append(point1[:-1],0) 
-    #vector of the line from camera to point1 (u)
-    camTo1 = currentPoint1 - camera 
-    # vector from the point on the plane to point on the line (w)
-    planeToLine = currentPoint1 - point1
-    #dot product of plane normal and intersecting line (n.u)
-    planeNormDotLine = plane_normal.dot(camTo1)
-    # point along the vector (si = n.w/n.u)
-    si = -plane_normal.dot(planeToLine) / planeNormDotLine
-    # work out coordinates of point (w + si*u + planepoint)
-    adjPoint = (planeToLine + (si * camTo1)) + point1
-    return list(adjPoint)
-#%%
-# maths based from http://tutorial.math.lamar.edu/Classes/CalcIII/EqnsOfPlanes.aspx
-# find the 'theoretical' height of the central point i.e the height if the topography was 
-# perfectly planar
-def compCentZ(point1, point2, point3, central):
-    # calculate the normal    
-    plane_normal =  np.cross(np.subtract(point1, point2), np.subtract(point1, point3))
-    # get the coefficients for the plane equation
-    # ax +by +cz = d
-    a = plane_normal[0]
-    b = plane_normal[1]
-    c = plane_normal[2]
-    d = a*point1[0] + b*point1[1] + c*point1[2]
-    # rearrange for z and plut in central x and y coordinates
-    # z = (d -ax -by)/c
-    zCentralPlane = (d- a*central[0] - b*central[1])/c
-    # difference between real centre height and that predicted by plane
-    centralZdif = central[2] - zCentralPlane
-    return centralZdif
-#%%
-# create a kml file showing polygon of viewing points
-def createKML(df, run, adjusted):
-    for i, row in df.iterrows():
-        if adjusted == True:
-            lon1, lat1 = myProj(row['r1sl_adjusted'][0], row['r1sl_adjusted'][1], inverse = True)
-            lon2, lat2 = myProj(row['r1sr_adjusted'][0], row['r1sr_adjusted'][1], inverse = True)
-            lon3, lat3 = myProj(row['r2sl_adjusted'][0], row['r2sl_adjusted'][1], inverse = True)
-            lon4, lat4 = myProj(row['r2sr_adjusted'][0], row['r2sr_adjusted'][1], inverse = True)
-            
-            coordinates =   (str(lon1)+','+str(lat1)+','+ str(row['r1sl_adjusted'][2] + 5) +' '+
-                            str(lon3)+','+str(lat3)+','+ str(row['r2sl_adjusted'][2] + 5) +' '+
-                            str(lon4)+','+str(lat4)+','+ str(row['r2sr_adjusted'][2] + 5 ) +' '+
-                            str(lon2)+','+str(lat2)+','+ str(row['r1sr_adjusted'][2] + 5))
-            color = '#a00000ff'
-        else:
-            lon1 = row['r1sl_lon']
-            lat1 = row['r1sl_lat']
-            lon2 = row['r1sr_lon']
-            lat2 = row['r1sr_lat']
-            lon3 = row['r2sl_lon']
-            lat3 = row['r2sl_lat']
-            lon4 = row['r2sr_lon']
-            lat4 = row['r2sr_lat']
-            
-            coordinates =   (str(lon1)+','+str(lat1)+','+ str(float(row['r1sl_elev']) + 5) +' '+
-                            str(lon3)+','+str(lat3)+','+ str(float(row['r2sl_elev']) + 5) +' '+
-                            str(lon4)+','+str(lat4)+','+ str(float(row['r2sr_elev']) + 5 ) +' '+
-                            str(lon2)+','+str(lat2)+','+ str(float(row['r1sr_elev']) + 5))
-            color = '#a0ff0000'
-            
-        polygon_kml = KML.kml( 
-                    KML.Placemark(
-                        KML.Style(
-                        KML.PolyStyle(
-                                KML.color(color)
-                                )
-                        ),         
-                        KML.name(str(run)+'_'+str(row['Label'])),
-                        KML.Polygon(
-                           KML.extrude(1), 
-                           GX.altitudeMode('absolute'),
-                           KML.outerBoundaryIs(
-                                   KML.LinearRing(
-                                           KML.coordinates(
-                                            coordinates
-                                            )
-                                    )
-                            )
-                     )
-                  )
-                )
-        
-        if adjusted == True:
-            outfile = open('out/viewDomains/'+str(run)+'/'+str(row['Label'])+'_adj.kml', 'w')
-        else: 
-            outfile = open('out/viewDomains/'+str(run)+'/'+str(row['Label'])+'.kml', 'w')
-        outfile.write(etree.tostring(polygon_kml, pretty_print = True)) 
-        outfile.close()
-#%%
-def assertSameCoords(dataframe, elevations, index, noDP):
-    assert abs(float(elevations[index][0]) - round(dataframe.loc[index, 'central_lat'], noDP[0])) < 10**noDP[0] and abs(float(elevations[index][1]) - round(dataframe.loc[index, 'central_lon'], noDP[1])) < 10**noDP[1]
-    assert abs(float(elevations[index][3]) - round(dataframe.loc[index, 'r1sl_lat'], noDP[2])) < 10**noDP[2] and abs(float(elevations[index][4]) - round(dataframe.loc[index, 'r1sl_lon'], noDP[3])) < 10**noDP[3]
-    assert abs(float(elevations[index][6]) - round(dataframe.loc[index, 'r2sl_lat'], noDP[4])) < 10**noDP[4] and abs(float(elevations[index][7]) - round(dataframe.loc[index, 'r2sl_lon'], noDP[5])) < 10**noDP[5]
-    assert abs(float(elevations[index][9]) - round(dataframe.loc[index, 'r1sr_lat'], noDP[6])) < 10**noDP[6] and abs(float(elevations[index][10]) - round(dataframe.loc[index, 'r1sr_lon'], noDP[7])) < 10**noDP[7]
-    assert abs(float(elevations[index][12]) - round(dataframe.loc[index, 'r2sr_lat'], noDP[8])) < 10**noDP[8] and abs(float(elevations[index][13]) - round(dataframe.loc[index, 'r2sr_lon'], noDP[9])) < 10**noDP[9]
-
+# get all the required functions
+execfile('scripts/functions.py')
+# get the input parameters
+execfile('scripts/input_params.py')
 #%%
 #import data 
 runs = os.listdir('googleEarthOut')
@@ -144,21 +27,11 @@ for i in runs[1:]:
     runDF = pd.read_csv('googleEarthOut/'+i+'/imageIntervalTable_'+i+'.csv')
     runDF['run'] = i
     imgMeta = pd.concat([imgMeta, runDF], axis = 0, ignore_index=True)
-    
-#%%
-# read in configuration file
-configPath = "metaData/imageCollectionConfig.yml"
-with open(configPath) as file:
-    meta = yaml.load(file, Loader=yaml.FullLoader)
-#get horizontal field of view
-horizFov = meta['cameraOptions']['horizFov']
-#get location of R on users computer
-RscriptLoc = meta['scriptDirectories']['RDir']
-# get cooridinate system
-myProjString = meta['projection']
-myProj = pyproj.Proj(myProjString)
 #%%
 print('Calculating camera view domains')
+#%%
+imgMeta['zenith'] = imgMeta['zenith'].astype(float)
+imgMeta['azimuth'] = imgMeta['azimuth'].astype(float)
 #%%
 #get the distance from the camera to central point (c)
 imgMeta['cDistance'] = camToGround(imgMeta['zenith'], imgMeta['Z'])
@@ -166,7 +39,7 @@ imgMeta['cDistance'] = camToGround(imgMeta['zenith'], imgMeta['Z'])
 # use azimuth to find the angle 'theta'- the angle measured from the zero x plane to central view direction.
 # then convert from a polar coordinate system to a cartesian by using x = x_cam + cDistance*cos(theta)
 # and y = y_cam + cDistance*sin(theta). 
-imgMeta['theta'] = np.where(imgMeta['azimuth'] > 90, 450 - imgMeta['azimuth'], 90 - imgMeta['azimuth'])
+imgMeta['theta'] = np.where(imgMeta['azimuth'] > 90, 450 - imgMeta['azimuth'], 90 - imgMeta['azimuth']).astype(float)
 
 imgMeta['centralX'], imgMeta['centralY'] = convToCartesian(imgMeta['X'], imgMeta['Y'], imgMeta['cDistance'], imgMeta['theta'])
 imgMeta['central'] = map(list, zip(imgMeta['centralX'], imgMeta['centralY']))
@@ -356,8 +229,8 @@ for i, r in imgMeta3.iterrows():
 print('Creating view domain KML files')
 # create view domains folder
 for i in runs:
-    if os.path.exists('out/viewDomains/'+i) == False:
-        os.makedirs('out/viewDomains/'+i)
+    if os.path.exists('kmlFiles/viewDomains/'+i) == False:
+        os.makedirs('kmlFiles/viewDomains/'+i)
 #%%
 #create kml files showing swath of each image
 imgMeta3Group = imgMeta3.groupby('run')
