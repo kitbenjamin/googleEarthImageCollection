@@ -10,13 +10,15 @@ import numpy as np
 import pandas as pd
 import re
 import shutil
-import sys
 #%%
 # execute the functions file
 execfile('scripts/functions.py')
 # get the input parameters
 execfile('scripts/input_params.py')
 #%%
+# remove placeholder files 
+directories = os.listdir(os.getcwd())
+rmov = [os.remove(dire+'/placeholder.txt') for dire in directories if os.path.isdir(dire) and os.path.isfile(dire+'/placeholder.txt')]
 # if can't find any alternative return stage 6 i.e no idea
 stageCode = 6
 crashPoint = 'Not sure whats going on'
