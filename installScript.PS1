@@ -2,6 +2,11 @@ $scriptpath = $MyInvocation.MyCommand.Path
 $dir = Split-Path $scriptpath
 Push-Location $dir
 
+If(!(test-path "regions"))
+{
+      New-Item -ItemType Directory -Force -Path "regions"
+}
+
 [void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic')
 
 $title = 'New region'
