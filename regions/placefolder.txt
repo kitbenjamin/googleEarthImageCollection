@@ -1,1 +1,0 @@
-This file has no use but has been created to create the simulations subdirectory in the github repository.
