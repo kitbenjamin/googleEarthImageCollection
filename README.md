@@ -10,7 +10,7 @@ Collect images from Google Earth that can be used to generate 3-D models.
      * Google Earth Pro
 ### Packages:
      * Powershell: powershell-yaml
-     * Python2.7: os, numpy, pandas, subprocess, shutil, re, pyyaml, pykml, lxml, pyproj
+     * Python2.7: os, numpy, pandas, subprocess, shutil, re, pyyaml, pykml, lxml, pyproj==1.9.6
      * R: RCurl, RJSONIO
      
 ## Install python packages
