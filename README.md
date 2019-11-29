@@ -15,7 +15,7 @@ Collect images from Google Earth that can be used to generate 3-D models.
      
 ## Install python packages
 Install pip with e.g.:
- C:/Python27/python.exe get-pip.py
+     C:/Python27/python.exe get-pip.py
 with get-pip.py found in this repository.
 
 Make sure you have PROJ, get it via osgeo: http://download.osgeo.org/osgeo4w/osgeo4w-setup-x86_64.exe
@@ -24,7 +24,7 @@ Then install packages:
  
 ## Install R packages
 Open R and type:
- install.packages(c("RCurl", "RJSONIO"))
+    install.packages(c("RCurl", "RJSONIO"))
      
 ## Usage
 1. To initiate a new collection region run the install.bat file. This will prompt you to name for your region. This will 
