@@ -24,7 +24,7 @@ Make sure you have PROJ, get it via osgeo: http://download.osgeo.org/osgeo4w/osg
 Then install packages:
 
 ```
-C:/Python27/Scripts/pip.exe install numpy pandas pyyaml pykml lxml pyproj subprocess shutil re 
+C:/Python27/Scripts/pip.exe install numpy pandas pyyaml pykml lxml pyproj
  ```
  
 ## Install R packages
