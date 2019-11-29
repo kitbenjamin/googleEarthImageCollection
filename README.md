@@ -92,4 +92,4 @@ cameraOptions:
    - 0
    - 45
  ```
- If you wanted to tke images at zenith angles 0 and 45. Correspondingly, nSamplesAroundOrigin and pathLengths must also have 2 arguments in this scenario. For example if you had zenithAngles $\vec{0, 45}$, as above,  nSamplesAroundOrigin $\vec{-1, -10}$ and pathLengths $\vec{-360, -260}$ you would have one image at 0 degrees from 360 metres and 10 at 45 degrees from 260 metres. 
+ If you wanted to tke images at zenith angles 0 and 45. Correspondingly, nSamplesAroundOrigin and pathLengths must also have 2 arguments in this scenario. For example if you had zenithAngles $\vec{(0, 45)}$, as above,  nSamplesAroundOrigin \vec{-1, -10} and pathLengths \vec{(-360, -260)} you would have one image at 0 degrees from 360 metres and 10 at 45 degrees from 260 metres. 
