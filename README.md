@@ -81,6 +81,12 @@ install.packages(c("RCurl", "RJSONIO"))
 - **This height correction is not accurate in complex terrain.** This is the reason a 'topography flag' is given in these situations. This is derived by finding the height difference between height of the central point given by the google maps API and the theoretical height derived by calculating the height the central point would have if it was on each of the planes. If the difference is greater than 15m for all planes the land surface is considered non-planar enough such that the adjusted view domain calculation will be significantly affected. in this situation the user is reccomended to take more images of the area.
 - All this imformation can be found in viewDomains.csv in the 'imageInterval' directory. 
 
+## Directory navigation
+| Directory | Description |
+| --------- | ----------- |
+| googleEarthOut | Where images are saved from google earth. Images are then moved into subdirectories based the number of times google earth has been re-run i.e. how many times it has crashed or been closed by the user |
+
+
 ## Configuration parameters
 All of these are parameters that define the area that is collected and how the images will appear.
 
