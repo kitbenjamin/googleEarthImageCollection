@@ -84,7 +84,11 @@ install.packages(c("RCurl", "RJSONIO"))
 ## Directory navigation
 | Directory | Description |
 | --------- | ----------- |
-| googleEarthOut | Where images are saved from google earth. Images are then moved into subdirectories based the number of times google earth has been re-run i.e. how many times it has crashed or been closed by the user |
+| googleEarthOut | Where images are saved from google earth. Images are then moved into subdirectories based the number of times google earth has been re-run i.e. how many times it has crashed or been closed by the user. |
+| imageInterval | Where csv files files containing information on each image such as where the camera is located and the view domain of the image. |
+| kmlFiles | kml files of the google earth 'tour' as well as a folder containing view domain KMLs for every image, making it easy to see what the program has calculated the view domain to be. This includes both the height adjusted and non height adjusted view domains. |
+| LOG | powershell transcript text files stored here | 
+| metaData | imageCollectionConfig.yml is stored here -> this is where you define the area of your region. | 
 
 
 ## Configuration parameters
