@@ -52,7 +52,7 @@ Run install.bat to create a new directory structure to store images for a given 
 | imageInterval | Contains csv files with image meta data (camera location, rotation, view domain) |
 | kmlFiles | Contains Google Earth 'tour' kml files as well as a folder containing view domain KMLs for every image, making it easy to see what the program has calculated the view domain to be. This includes both the height adjusted and non height adjusted view domains |
 | LOG | powershell log files | 
-| metaData | Contains imageCollectionConfig.yml | 
+| metaData | Contains imageCollectionConfig.yml. THis file contains all program parameters. | 
 
 ### Edit imageCollectionConfig.yml
 Define the directories to Python, R and Google Earth in the imageCollectionConfig.yml.
