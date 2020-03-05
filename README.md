@@ -16,7 +16,7 @@
  * Windows Powershell
  * Python 2.7
  * R 
- * Google Earth Pro desktop
+ * Google Earth Pro desktop (tested on version 7.3.2.5776)
 ### Packages (with version used for testing):
  * Powershell: powershell-yaml
  * Python2.7: numpy (1.16.5), pandas (0.24.2), pyyaml (5.1.2), pykml (0.1.3), lxml (4.4.1), pyproj (1.9.6)
@@ -46,12 +46,7 @@ devtools::install_version("RJSONIO", version = '1.3-1.2')
 ## Usage
 
 ### Installation
-Run install.bat to setup a directory structure where images for a region are stored. The subdirectories appear in the "regions" folder. By creating a region called "testRegion", the directory structure is: 
-
-```
-regions/testRegion/
-```
-with the following subdirectories: 
+Run install.bat to create a new directory structure to store images for a given region. These appear as a subdirectory in the *simulations* folder.
 
 | Directory | Description |
 | --------- | ----------- |
@@ -126,9 +121,24 @@ googleEarthOut\run1\movie-000000.png
 etc.
 
 ### imageInterval/imageIntervalTable.csv
-To add (this is possibly only used by program and maybe can be delete- will check)
+This is the original table created by the programme showing every camera position it plans to take a picture from. Column meanings are defined below.
+
 ### imageInterval/imageViewDomains.csv
-To add
+This file contains information about each image collected from google earth. The columns have the following meanings:
+
+| Header(s) | Description |
+| ------ | ----------- |
+| Z, X, Y | The height, X and Y positions of the camera. | 
+| Zenith, azimuth | The zenith and azimuth angles of the camera. |
+| Roll | Roll of the camera. |
+| Z_ground | The height of the ground at the cameras X, Y location. |
+| IntervalCentre | The central point of the interval that the camera is focussed on, and the height of this point above sea level [x, y, z]. |
+| Created | A reference column used by the program. |
+| intervalNo | The interval number. |
+| Label, run | The name of the image and which 'run' it was created. |
+| central, r1sl, r2sl, r1sr, r1sl | The coordinates and above sea level height of the central point, lower left, upper left, lower right and upper right of the image. See below for more details. |
+| r1sl_adjusted, r2sl_adjusted, r1sr_adjusted, r1sl_adjusted | As above but after making an adjustment for height. |
+| topography_flag | 0 or 1. 0 means no complex topography has been detected and 1 means complex topography has been detected. In this case the calculated view domain of the image is likely to be innacurrate. The user should consider taking a higher density of images if complex terrain is present. |
 
 ## Further details
 
