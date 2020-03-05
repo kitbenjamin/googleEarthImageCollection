@@ -55,9 +55,9 @@ Run install.bat to create a new directory structure to store images for a given 
 | metaData | Contains imageCollectionConfig.yml | 
 
 ### Edit imageCollectionConfig.yml
-Configure your collection region and other parameters such as the directories to Python, R and Google Earth in the imageCollectionConfig.yml. This is in YAML format.
+Define the directories to Python, R and Google Earth in the imageCollectionConfig.yml.
 
-The below parameters define the Google Earth "tour": e.g. number of images, extent of the sample region.
+Define the Google Earth "tour" parameters: e.g. number of images, extent of the sample region.
 
 | Parameter | Description | Units |
 | --------- | ----------- | ----- |
