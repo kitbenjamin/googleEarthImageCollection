@@ -109,9 +109,13 @@ Once the tour and image capture has finished, close Google Earth and follow the 
 
 ### googleEarthOut
 Stores the raw output images from Google Earth. They are sorted into *n* subdirectories (googleEarthOut\run*n*), where *n* is the number of times Google Earth was restarted. This is needed because once Google Earth is restarted, the image number always starts from zero. The first image from the first run is
-     googleEarthOut\run0\movie-000000.png
+```
+googleEarthOut\run0\movie-000000.png
+```
 The first image from the second run is 
-     googleEarthOut\run1\movie-000000.png
+```
+googleEarthOut\run1\movie-000000.png
+```
 etc.
 
 ### imageInterval/imageIntervalTable.csv
