@@ -17,11 +17,12 @@
  * Python 2.7
  * R 
  * Google Earth Pro desktop
-### Packages:
+### Packages (with version used for testing):
  * Powershell: powershell-yaml
- * Python2.7: numpy, pandas, pyyaml, pykml, lxml, pyproj
- * R: RCurl, RJSONIO
-     
+ * Python2.7: numpy (1.16.5), pandas (0.24.2), pyyaml (5.1.2), pykml (0.1.3), lxml (4.4.1), pyproj (1.9.6)
+ * R: RCurl (1.98-1.1), RJSONIO (1.3-1.2), stringr (1.4.0), processx (3.4.1), ps (1.3.0), data.table (1.12.2)
+_note other versions may also work (testing required)_
+
 ### Install python packages
 Install pip with e.g.:
 ```
@@ -32,13 +33,13 @@ with get-pip.py found in this repository.
 Make sure you have PROJ, get it via osgeo: http://download.osgeo.org/osgeo4w/osgeo4w-setup-x86_64.exe
 Then install packages:
 ```
-C:/Python27/Scripts/pip.exe install numpy pandas pyyaml pykml lxml pyproj
+C:/Python27/Scripts/pip.exe install numpy==1.16.5 pandas==0.24.2 pyyaml==5.1.2 pykml==0.1.3 lxml==4.4.1 pyproj==1.9.6
  ```
  
 ### Install R packages
-Open R and type:
+Install specific package versions like this:
 ```
-install.packages(c("RCurl", "RJSONIO"))
+devtools::install_version("RJSONIO", version = '1.3-1.2')
 ```
 
 ## Usage
@@ -119,7 +120,7 @@ googleEarthOut\run1\movie-000000.png
 etc.
 
 ### imageInterval/imageIntervalTable.csv
-To add
+To add (this is possibly only used by program and maybe can be delete- will check)
 ### imageInterval/imageViewDomains.csv
 To add
 
