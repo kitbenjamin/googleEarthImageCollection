@@ -1,6 +1,4 @@
 # googleEarthImageCollection
-Collect images from Google Earth that can be used to generate 3-D models.
----
 
 ## Overview
 * Automate the collection of Google Earth images for a specified area and using specified view angles.
