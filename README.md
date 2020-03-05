@@ -16,7 +16,7 @@
  * Windows Powershell
  * Python 2.7
  * R 
- * Google Earth Pro
+ * Google Earth Pro desktop
 ### Packages:
  * Powershell: powershell-yaml
  * Python2.7: numpy, pandas, pyyaml, pykml, lxml, pyproj
@@ -99,7 +99,11 @@ Google Earth should automatically open when imageCollection.PS1 is run. Configur
  * frames per second (fps) must correspond to the 'lookAtDuration' defined in the config yml file e.g. a look at duration of 0.1s corresponds to a fps of 10. 
  * It's recommended that a square picture size is use e.g. 2000 x 2000 pixels.
  * Maximum picture quality is recommended. 
+6. Click "create movie"
+7. If Googel Earth crashes, follow the powershell prompts (requires quotes e.g. type "y" not y, see issue #8). 
 
+## Close Google Earth
+Once theyour and image capture has finished, close Google Earth and follow the powershell prompts
 
 ## Further details
 
