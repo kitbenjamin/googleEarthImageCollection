@@ -34,5 +34,5 @@ Copy-Item -recurse "baseFiles\*" "regions\$($text)\"
 $wshell = New-Object -ComObject Wscript.Shell
 
 $wshell.Popup("Now run the programs within regions\$($text)
-Please refer to http://urban-climate.net/wiki/Google_Earth_3D_Modelling for details", 0, "Done", 0x1)
+Please refer to https://github.com/kitbenjamin/googleEarthImageCollection for details", 0, "Done", 0x1)
 
