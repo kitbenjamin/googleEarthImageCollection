@@ -46,7 +46,12 @@ devtools::install_version("RJSONIO", version = '1.3-1.2')
 ## Usage
 
 ### Installation
-Run install.bat to setup a directory structure where images for a region are stored. The subdirectories appear in the "regions" folder.
+Run install.bat to setup a directory structure where images for a region are stored. The subdirectories appear in the "regions" folder. By creating a region called "testRegion", the directory structure is: 
+
+```
+regions/testRegion/
+```
+with the following subdirectories: 
 
 | Directory | Description |
 | --------- | ----------- |
