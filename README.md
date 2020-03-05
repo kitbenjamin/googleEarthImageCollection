@@ -2,10 +2,10 @@
 Collect images from Google Earth that can be used to generate 3-D models.
 ---
 
-## Features
-* Collect images from Google Earth for a specified area and using specified view angles.
-* If Google Earth crashes, Google Earth will restart from the point of the crash.
-* Viewing domain, or source area, of each image is calculated. 
+## Overview
+* Automate the collection of Google Earth images for a specified area and using specified view angles.
+* Handles Google Earth crashes
+* Viewing area, location and rotation of each camera is calculated. 
 
 ## Dependencies
 ### OS:
@@ -29,7 +29,6 @@ with get-pip.py found in this repository.
 
 Make sure you have PROJ, get it via osgeo: http://download.osgeo.org/osgeo4w/osgeo4w-setup-x86_64.exe
 Then install packages:
-
 ```
 C:/Python27/Scripts/pip.exe install numpy pandas pyyaml pykml lxml pyproj
  ```
@@ -41,11 +40,35 @@ install.packages(c("RCurl", "RJSONIO"))
 ```
 
 ## Usage
-Create a new directory structure to store images for a given region. Run install.bat to create the directories. These appear as a subdirectory in the *simulations* folder.
+Run install.bat to create a new directory structure to store images for a given region. These appear as a subdirectory in the *simulations* folder.
+
+| Directory | Description |
+| --------- | ----------- |
+| googleEarthOut | Where images are saved from google earth. Images are then moved into subdirectories based the number of times google earth has been re-run i.e. how many times it has crashed or been closed by the user. |
+| imageInterval | Where csv files files containing information on each image such as where the camera is located and the view domain of the image. |
+| kmlFiles | kml files of the google earth 'tour' as well as a folder containing view domain KMLs for every image, making it easy to see what the program has calculated the view domain to be. This includes both the height adjusted and non height adjusted view domains. |
+| LOG | powershell transcript text files stored here | 
+| metaData | imageCollectionConfig.yml is stored here -> this is where you define the area of your region. | 
 
 ### Edit imageCollectionConfig.yml
 Configure your collection region and other parameters- such as the directories to Python, R and Google Earth in the imageCollectionConfig.yml. This is in YAML format.
-Put the imageCollectionConfig.yml table here
+
+All of these are parameters that define the area that is collected and how the images will appear.
+
+| Parameter | Description | Units |
+| --------- | ----------- | ----- |
+| projection | The coordinate system that you are using to define your collection area. This should be in the form of a proj4 string, such as the default projection in imageCollectionConfig.yml | NA |
+|  Latstart/Lonstart | The UTM lat/lon coordinate for the bottom left corner of the full domain. Might be useful to use https://epsg.io/map [or similar] to get an idea of the UTM coordinates needed. | m |
+|  latinterval/loninterval |  The size of the domain in lat/lon axis | m |
+|  latstep/lonstep | The resolution of each interval in lon/lat axis. The distance is measured from the XY center of each interval. If the step is not divisble by the interval [latinterval/loninterval], the number of steps will be rounded up. | m |
+| horizFov |  Horizontal field of view of google earth tour camera. | degrees | 
+| range0 | Unsure of function- keep to zero [default] | No idea |
+| altitudeMode | How the height of the camera is determined i.e. for absolute the camera height is measured from a height of zero as opposed to ground level | NA |
+| lookAtDuration |  How long does the google earth tour camera look at a given location? Default is 1 second. Only play with this if there are issues with google earth. Other elements of the program routine will need to be edited if this parameter is changed. E.g. if changing to 1s then you will need to run the google earth "movie" at 1 fps rather that 10 fps for 0.1s . | seconds |
+| zenithAngles | Zenith angles of the camera. Takes multiple inputs. Use in conjunction with multiple 'nSamplesAroundOrigin' and 'pathLengths' | degrees | 
+| nSamplesAroundOrigin | number of images to be taken around each zenithAngle. Use in conjunction with multiple 'zenithAngles' and 'pathLengths'| NA |
+| pathLengths | The path length between the camera and the center of the chunk. The center of the chunk is adjusted to be above sea level. Use in conjunction with 'zenithAngles' and 'nSamplesAroundOrigin' | m |
+
 
 ### Configure Google Earth
 Put the steps to configure google earth here
@@ -93,32 +116,8 @@ Anything below here should be put in the appropriate art of "Usage" and "Further
 - **This height correction is not accurate in complex terrain.** This is the reason a 'topography flag' is given in these situations. This is derived by finding the height difference between height of the central point given by the google maps API and the theoretical height derived by calculating the height the central point would have if it was on each of the planes. If the difference is greater than 15m for all planes the land surface is considered non-planar enough such that the adjusted view domain calculation will be significantly affected. in this situation the user is reccomended to take more images of the area.
 - All this imformation can be found in viewDomains.csv in the 'imageInterval' directory. 
 
-## Directory navigation
-| Directory | Description |
-| --------- | ----------- |
-| googleEarthOut | Where images are saved from google earth. Images are then moved into subdirectories based the number of times google earth has been re-run i.e. how many times it has crashed or been closed by the user. |
-| imageInterval | Where csv files files containing information on each image such as where the camera is located and the view domain of the image. |
-| kmlFiles | kml files of the google earth 'tour' as well as a folder containing view domain KMLs for every image, making it easy to see what the program has calculated the view domain to be. This includes both the height adjusted and non height adjusted view domains. |
-| LOG | powershell transcript text files stored here | 
-| metaData | imageCollectionConfig.yml is stored here -> this is where you define the area of your region. | 
-
 
 ## Configuration parameters
-All of these are parameters that define the area that is collected and how the images will appear.
-
-| Parameter | Description | Units |
-| --------- | ----------- | ----- |
-| projection | The coordinate system that you are using to define your collection area. This should be in the form of a proj4 string, such as the default projection in imageCollectionConfig.yml | NA |
-|  Latstart/Lonstart | The UTM lat/lon coordinate for the bottom left corner of the full domain. Might be useful to use https://epsg.io/map [or similar] to get an idea of the UTM coordinates needed. | m |
-|  latinterval/loninterval |  The size of the domain in lat/lon axis | m |
-|  latstep/lonstep | The resolution of each interval in lon/lat axis. The distance is measured from the XY center of each interval. If the step is not divisble by the interval [latinterval/loninterval], the number of steps will be rounded up. | m |
-| horizFov |  Horizontal field of view of google earth tour camera. | degrees | 
-| range0 | Unsure of function- keep to zero [default] | No idea |
-| altitudeMode | How the height of the camera is determined i.e. for absolute the camera height is measured from a height of zero as opposed to ground level | NA |
-| lookAtDuration |  How long does the google earth tour camera look at a given location? Default is 1 second. Only play with this if there are issues with google earth. Other elements of the program routine will need to be edited if this parameter is changed. E.g. if changing to 1s then you will need to run the google earth "movie" at 1 fps rather that 10 fps for 0.1s . | seconds |
-| zenithAngles | Zenith angles of the camera. Takes multiple inputs. Use in conjunction with multiple 'nSamplesAroundOrigin' and 'pathLengths' | degrees | 
-| nSamplesAroundOrigin | number of images to be taken around each zenithAngle. Use in conjunction with multiple 'zenithAngles' and 'pathLengths'| NA |
-| pathLengths | The path length between the camera and the center of the chunk. The center of the chunk is adjusted to be above sea level. Use in conjunction with 'zenithAngles' and 'nSamplesAroundOrigin' | m |
 
 #### Using multiple zenith angles, path lengths and samples around origin
 The parameters 'zenithAngles', 'nSamplesAroundOrigin' and 'pathLengths' **must all have the same number of inputs**. Multiple inputs are given to a parameter like so: 
