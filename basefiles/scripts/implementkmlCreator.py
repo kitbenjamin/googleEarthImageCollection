@@ -104,7 +104,7 @@ if stageCode == 0:
     execfile('scripts/calcViewDomain.py')
 else:
     # give user option to continue-> is not delete and start again
-    cont = input('Existing simulation components have been detected. Do you want to continue this simulation ["y"/"n"] ')
+    cont = raw_input('Existing simulation components have been detected. Do you want to continue this simulation [y/n] ')
     if cont == 'y':
         print('Will attempt to continue')
         print('Stage prior to crash: ' + crashpoint)
@@ -116,3 +116,4 @@ else:
         dirs = ['googleEarthOut', 'imageInterval', 'kmlFiles']
         [shutil.rmtree(dire) for dire in dirs if os.path.exists(dire)]
         [os.mkdir(dire) for dire in dirs]
+        execfile('scripts/kmlCreator.py')
