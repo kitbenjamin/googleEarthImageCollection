@@ -2,6 +2,11 @@
 Collect images from Google Earth that can be used to generate 3-D models.
 ---
 
+## Features
+* Collect images from Google Earth for a specified area and using specified view angles.
+* If Google Earth crashes, Google Earth will restart from the point of the crash.
+* Viewing domain, or source area, of each image is calculated. 
+
 ## Dependencies
 ### OS:
      * Windows (tested on W10)
@@ -34,20 +39,26 @@ Open R and type:
 ```
 install.packages(c("RCurl", "RJSONIO"))
 ```
-   
+
 ## Usage
-1. Create a new directory structure to store images for a given region. Run install.bat to create the directories. These appear as a subdirectory in the *simulations* folder.
-2. Configure your collection region and other parameters- such as the directories to Python, R and Google Earth in the 
-   imageCollectionConfig.yml. This is in YAML format. See below for further details.
-3. Run imageCollection.PS1 to collect all required Google Earth images and calculate their view domains. See below for further details.
+Create a new directory structure to store images for a given region. Run install.bat to create the directories. These appear as a subdirectory in the *simulations* folder.
 
-## Features
-* Collect images from Google Earth for a specified area.
-* If Google Earth crashes, Google Earth will restart from the point of the crash.
-* Viewing domain, or source area, of each image is calculated. This is adjusted for height. The height adjustment is least effective in non-uniform terrain so a flag is given is this is detected. Users should consider a higher density of images for these areas. This can later be used to help create high quality models of a selected area, using these collected images.  
-* If process breaks, e.g. powershell crashes, the program will try and detect at which stage it broke restart from there.
+### Edit imageCollectionConfig.yml
+Configure your collection region and other parameters- such as the directories to Python, R and Google Earth in the imageCollectionConfig.yml. This is in YAML format.
+Put the imageCollectionConfig.yml table here
 
-## Instructions
+### Configure Google Earth
+Put the steps to configure google earth here
+
+### Run imageCollection.PS1
+Run imageCollection.PS1 to collect all required Google Earth images and calculate their view domains.
+Describe quickly what goes on during the processing
+
+## Furhter details
+### Source area calculation
+### other details
+
+Anything below here should be put in the appropriate art of "Usage" and "Further details" secion
 ### A. image collection
 - The meta data for the collection, such as the collection area, for the Google Earth image collection is defined in the imageCollectionConfig.yml file within the 'metaData' directory.   
 - After configuring the image collection, imageCollection.PS1 is run. Firstly, this will create the imageIntervalTable.csv file within the 'imageInterval' directory. This file contains information on the camera position of all images that will be created, given the meta data provided.
