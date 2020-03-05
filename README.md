@@ -21,6 +21,7 @@
  * Powershell: powershell-yaml
  * Python2.7: numpy (1.16.5), pandas (0.24.2), pyyaml (5.1.2), pykml (0.1.3), lxml (4.4.1), pyproj (1.9.6)
  * R: RCurl (1.98-1.1), RJSONIO (1.3-1.2), stringr (1.4.0), processx (3.4.1), ps (1.3.0), data.table (1.12.2)
+
 _note other versions may also work (testing required)_
 
 ### Install python packages
