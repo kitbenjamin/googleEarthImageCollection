@@ -94,7 +94,7 @@ Google Earth should automatically open when imageCollection.PS1 is run. Configur
 4. The following window will appear:
 ![alt text](images/movie_maker.png)
 5. You have to use the settings displayed:
- * **You must save images in the googleEarthOut subdirectory within the region directory you're working in**
+ * Save images in the googleEarthOut subdirectory within the region directory you're working in
  * Make sure you select the right kml from the saved tour drop down menu. The tour kml will be called {your project name}_{number of times google earth has run}.kml
  * frames per second (fps) must correspond to the 'lookAtDuration' defined in the config yml file e.g. a look at duration of 0.1s corresponds to a fps of 10. 
  * It's recommended that a square picture size is use e.g. 2000 x 2000 pixels.
