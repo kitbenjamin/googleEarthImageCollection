@@ -46,7 +46,7 @@ devtools::install_version("RJSONIO", version = '1.3-1.2')
 ## Usage
 
 ### Installation
-Run install.bat to create a new directory structure to store images for a given region. These appear as a subdirectory in the *simulations* folder.
+Run install.bat to create a new directory structure to store images for a given region. These appear as a subdirectory in the "regions" folder.
 
 | Directory | Description |
 | --------- | ----------- |
