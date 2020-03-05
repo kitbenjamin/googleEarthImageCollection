@@ -117,3 +117,4 @@ else:
         [shutil.rmtree(dire) for dire in dirs if os.path.exists(dire)]
         [os.mkdir(dire) for dire in dirs]
         execfile('scripts/kmlCreator.py')
+        execfile('scripts/calcViewDomain.py')

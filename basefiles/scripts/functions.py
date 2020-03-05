@@ -176,7 +176,7 @@ def run_google_earth(kmlPath):
 def user_rerun_decide(endStatus):
             #use end status to let user decide whether to re run
     if endStatus == '"aborted"':
-        finish = input('Google Earth was aborted, was the movie maker finished? ["y"/"n"] ')
+        finish = raw_input('Google Earth was aborted, was the movie maker finished? [y/n] ')
         if finish == 'y':
             rerun = False
             print('Google Earth will not be opened again')
@@ -191,7 +191,7 @@ def user_rerun_decide(endStatus):
         print('Google Earth crashed, it shall now be reopened and movie maker can be re-run from the point of the crash')
         
     if endStatus == '"timedout"':
-        finish = input('Google Earth timed out, was the movie maker finished? ["y"/"n"] ')
+        finish = raw_input('Google Earth timed out, was the movie maker finished? [y/n] ')
         if finish == 'y':
             rerun = False
             print('Google Earth will not be opened again')
@@ -253,7 +253,7 @@ def rerun_get_GE_images(KMLname, imgTab, n, imageInterval, ps_crash = False):
                 break
             # if been rerun multiple of 20 times ask if still want to continue
             if n % 20 == 0:
-                finish = input('Google Earth has run ' +n+' times, would you like to continue the movie maker ["y"/"n"] ')
+                finish = raw_input('Google Earth has run ' +n+' times, would you like to continue the movie maker [y/n] ')
                 if finish == 'y':
                     rerun = True
                 elif finish == 'n':
@@ -261,6 +261,21 @@ def rerun_get_GE_images(KMLname, imgTab, n, imageInterval, ps_crash = False):
                 else:
                     print('unrecognised input, will continue')
                     rerun = True
+        # only remove the last image if the process was completed
+        else:
+           if len(toBeDone) == 0:
+               remove_repeated_image()
+    else:
+        remove_repeated_image()
+#%%
+def remove_repeated_image():
+    runDirs = os.listdir('googleEarthOut')
+    runn = [int(i[3]) for i in runDirs if 'run' in i and len(i) == 4]
+    lastRun = 'run'+str(max(runn))
+    lastRunImgs = [i for i in os.listdir('googleEarthOut/'+lastRun) if '.png' in i]
+    imgNumbs = [int(re.split("[.,-]", i)[1]) for i in lastRunImgs]
+    repeatedImg = 'movie-'+str(max(imgNumbs)).zfill(6)+'.png'
+    os.remove('googleEarthOut/'+lastRun+'/'+repeatedImg)
 #%%
 #=== calculate view domain functions ===
 #%%
