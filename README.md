@@ -38,6 +38,8 @@ install.packages(c("RCurl", "RJSONIO"))
 ```
 
 ## Usage
+
+### Installation
 Run install.bat to create a new directory structure to store images for a given region. These appear as a subdirectory in the *simulations* folder.
 
 | Directory | Description |
@@ -80,7 +82,7 @@ cameraOptions:
 ### Run imageCollection.PS1
 Run imageCollection.PS1 to collect all required Google Earth images and calculate their view domains. imageCollection.PS1 creates the imageIntervalTable.csv file within the 'imageInterval' directory. This file contains information on the camera position of all images that will be created. A KML file is also generated that is automatically loaded into Google Earth. Using this KML, a sequence of images of the specified area can be created. 
 
-### Configure Google Earth
+#### Configure Google Earth
 Google Earth should automatically open when imageCollection.PS1 is run. Configure Google Earth by:
 1. Clear and then maximise both caches [options.. -> tools -> options...] (with the buttons in the same window). 
 2. Close the small time bar in the bottom left corner of the images displayed, by clicking on the small 'x': ![alt text](images/time_bar.png)
