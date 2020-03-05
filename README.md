@@ -3,6 +3,8 @@ Collect images from Google Earth that can be used to generate 3-D models.
 ---
 
 ## Dependencies
+### OS:
+     * Windows (tested on W10)
 ### Software:
      * Windows Powershell
      * Python 2.7
@@ -13,7 +15,7 @@ Collect images from Google Earth that can be used to generate 3-D models.
      * Python2.7: numpy, pandas, pyyaml, pykml, lxml, pyproj
      * R: RCurl, RJSONIO
      
-## Install python packages
+### Install python packages
 Install pip with e.g.:
 ```
 C:/Python27/python.exe get-pip.py
@@ -27,18 +29,17 @@ Then install packages:
 C:/Python27/Scripts/pip.exe install numpy pandas pyyaml pykml lxml pyproj
  ```
  
-## Install R packages
+### Install R packages
 Open R and type:
 ```
 install.packages(c("RCurl", "RJSONIO"))
 ```
    
 ## Usage
-1. To initiate a new collection region run the install.bat file. This will prompt you to name for your region. This will 
-   then appear as a subdirectory in the *simulations* folder.
+1. Create a new directory structure to store images for a given region. Run install.bat to create the directories. These appear as a subdirectory in the *simulations* folder.
 2. Configure your collection region and other parameters- such as the directories to Python, R and Google Earth in the 
-   imageCollectionConfig.yml. This is in YAML format. To get the definitions of all parameters see below.
-3. Run imageCollection.PS1 to collect all required Google Earth images and calculate their view domains. See below for more info on how to do this.
+   imageCollectionConfig.yml. This is in YAML format. See below for further details.
+3. Run imageCollection.PS1 to collect all required Google Earth images and calculate their view domains. See below for further details.
 
 ## Features
 * Collect images from Google Earth for a specified area.
