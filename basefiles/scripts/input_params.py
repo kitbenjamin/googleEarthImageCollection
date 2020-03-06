@@ -20,19 +20,19 @@ with open(configPath) as file:
 #Each coordinate represents the locaiton of an individual "chunk"
 #of the surface processed by AgiSoft.
 # define variables
-collectionArea = meta['collectionArea']
+collectionArea = meta['regionArea']
 #latitiudes
 latstart = collectionArea['latStart']
-latinterval = collectionArea['latInterval']
-latend = latstart + latinterval
-latstep = collectionArea['latStep']
+latsize = collectionArea['latSize']
+latend = latstart + latsize
+latstep = collectionArea['latIntervalSize']
 latPoints = UTMseq(latstart, latend, latstep)
 
 #longitudes
 lonstart = collectionArea['lonStart']
-loninterval = collectionArea['lonInterval']
-lonend = lonstart + loninterval
-lonstep = collectionArea['lonStep']
+lonsize = collectionArea['lonSize']
+lonend = lonstart + lonsize
+lonstep = collectionArea['lonIntervalSize']
 lonPoints = UTMseq(lonstart, lonend, lonstep)
 
 latPointsGrid, lonPointsGrid = np.meshgrid(latPoints, lonPoints, indexing = 'xy')

@@ -5,13 +5,13 @@ scriptDirectories:
     RDir: C://Program Files//R//R-3.6.1//bin//
     googleEarthDir: C://Program Files//Google//Google Earth Pro//client//
 projection: +proj=utm +zone=31N, +north +ellps=WGS84 +datum=WGS84 +units=m +no_defs
-collectionArea:
+regionArea:
     latStart: 5712800 
-    latInterval: 400
-    latStep: 150
+    latSize: 400
+    latIntervalSize: 150
     lonStart: 284450
-    lonInterval: 350
-    lonStep: 150
+    lonSize: 350
+    lonIntervalSize: 150
 cameraOptions:
     horizFov: 40
     range0: 0
