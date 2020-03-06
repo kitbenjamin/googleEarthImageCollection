@@ -64,9 +64,9 @@ Define the Google Earth "tour" parameters: e.g. number of images, extent of the 
 | Parameter | Description | Units |
 | --------- | ----------- | ----- |
 | projection | The coordinate system that you are using to define your collection area. This should be in the form of a proj4 string, such as the default projection in imageCollectionConfig.yml | NA |
-| Latstart/Lonstart | The UTM lat/lon coordinate for the bottom left corner of the full region. Might be useful to use https://epsg.io/map [or similar] to get an idea of the UTM coordinates needed. | m |
-| latinterval/loninterval |  The size of the region in lat/lon axis (confusing parameter name) | m |
-| latstep/lonstep | The region is split into latstep/lonstep intervals. Google Earth images are taken around the central point of each interval. If the latstep/lonstep is not divisble by total region area [latinterval/loninterval], the number of steps will be rounded up. | m |
+| latStart/lonStart | The UTM lat/lon coordinate for the bottom left corner of the full region. Might be useful to use https://epsg.io/map [or similar] to get an idea of the UTM coordinates needed. | m |
+| latSize/lonSize |  The size of the region in lat/lon axis (confusing parameter name) | m |
+| latIntervalSize/lonIntervalSize | The region is split into latstep/lonstep intervals. Google Earth images are taken around the central point of each interval. If the latstep/lonstep is not divisble by total region area [latinterval/loninterval], the number of steps will be rounded up. | m |
 | horizFov |  Horizontal field of view of Google Earth tour camera. | degrees | 
 | range0 | Unsure of function- keep to zero [default] | No idea |
 | altitudeMode | How the height of the camera is determined i.e. for absolute the camera height is measured from a height of zero as opposed to ground level. Best to keep default. | NA |
