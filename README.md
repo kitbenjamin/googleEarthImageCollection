@@ -75,7 +75,7 @@ Define the Google Earth "tour" parameters: e.g. number of images, extent of the 
 | nSamplesAroundOrigin | For each latstep/lonstep, defines the number of images to be taken in equal azimuth angle steps around each zenithAngle. Use in conjunction with 'zenithAngles' and 'pathLengths' | NA |
 | pathLengths | The path length between the camera and the center of the chunk. The center of the chunk is adjusted to be above sea level. Use in conjunction with 'zenithAngles' and 'nSamplesAroundOrigin' | m |
 
-The 'regionnArea' parameters are shown diagramically below:
+The 'regionArea' parameters are shown diagramically below:
 ![alt text](images/region_defs.png)
 
 #### Using multiple zenith angles, path lengths and samples around origin
