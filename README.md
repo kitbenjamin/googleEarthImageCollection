@@ -45,16 +45,16 @@ devtools::install_version("RJSONIO", version = '1.3-1.2')
 
 ## Usage
 
-### Installation
-Run install.bat to create a new directory structure to store images for a given region. These appear as a subdirectory in the *simulations* folder.
+### Install a region
+Run install.bat to create a new directory structure to store images for a given region. These appear as a subdirectory in the *regions* folder.
 
 | Directory | Description |
 | --------- | ----------- |
-| googleEarthOut | Contains the Google Earth images. Images are moved into subdirectories based the number of times google earth has been re-run e.g. if Google Earth crashes or is restarted by the user |
+| googleEarthOut | Google Earth images are saved here. Images are moved into subdirectories based the number of times google earth has been re-run e.g. if Google Earth crashes or is restarted by the user |
 | imageInterval | Contains csv files with image meta data (camera location, rotation, view domain) |
 | kmlFiles | Contains Google Earth 'tour' kml files as well as a folder containing view domain KMLs for every image, making it easy to see what the program has calculated the view domain to be. This includes both the height adjusted and non height adjusted view domains |
 | LOG | powershell log files | 
-| metaData | Contains imageCollectionConfig.yml. THis file contains all program parameters. | 
+| metaData | Contains imageCollectionConfig.yml. This file contains all program parameters. | 
 
 ### Edit imageCollectionConfig.yml
 Define the directories to Python, R and Google Earth in the imageCollectionConfig.yml.
