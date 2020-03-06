@@ -128,10 +128,10 @@ This file contains information about each image collected from google earth. The
 
 | Header(s) | Description |
 | ------ | ----------- |
-| Z, X, Y | The height, X and Y positions of the camera. | 
+| Z, X, Y | The height above ground, X and Y positions of the camera. | 
 | Zenith, azimuth | The zenith and azimuth angles of the camera. |
 | Roll | Roll of the camera. |
-| Z_ground | The height of the ground at the cameras X, Y location. |
+| Z_ground | The height of the ground at the centre of the interval the camera is looking at. |
 | IntervalCentre | The central point of the interval that the camera is focussed on, and the height of this point above sea level [x, y, z]. |
 | Created | A reference column used by the program. |
 | intervalNo | The interval number. |
