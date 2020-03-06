@@ -66,7 +66,7 @@ if stageCode == 4 or stageCode == 5:
         nPhotos = np.sum([len(os.listdir('googleEarthOut'+'/'+i)) - 1 for i in runDirs])
         if len(imgMeta) > nPhotos:
             stageCode = 1
-            crashpoint = 'csv for run hasnt been created'
+            crashpoint = 'images havent been created for next run'
             if len(unmovedimgs) > 0:
                 stageCode = 1.5
                 crashpoint = 'images have been created but csv needs to be written'
