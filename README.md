@@ -73,10 +73,14 @@ Define the Google Earth "tour" parameters: e.g. number of images, extent of the 
 | lookAtDuration | How long does the Google Earth tour camera look at a given location? Default is 1 second. Only play with this if there are issues with google earth. Other elements of the program routine will need to be edited if this parameter is changed. E.g. if changing to 1s then you will need to run the google earth "movie" at 1 fps rather that 10 fps for 0.1s. Best to keep default. | seconds |
 | zenithAngles | Zenith angle(s) of the camera. 0 degrees looks straight down at the center of each latstep/lonstep. Takes multiple inputs. Use in conjunction with multiple 'nSamplesAroundOrigin' and 'pathLengths' | degrees | 
 | nSamplesAroundOrigin | For each latstep/lonstep, defines the number of images to be taken in equal azimuth angle steps around each zenithAngle. Use in conjunction with 'zenithAngles' and 'pathLengths' | NA |
-| pathLengths | The path length between the camera and the center of the chunk. The center of the chunk is adjusted to be above sea level. Use in conjunction with 'zenithAngles' and 'nSamplesAroundOrigin' | m |
+| pathLengths | The path length between the camera and the center of the interval. Use in conjunction with 'zenithAngles' and 'nSamplesAroundOrigin'. | m |
 
 The 'regionArea' parameters are shown diagramically below:
 ![alt text](images/region_defs.png)
+
+Images are collected by rotatating a camera around each interval 'nSamplesAroundOrigin' times. Once every image of one interval is collacted, the camera moves to the next, like this:
+![alt text](images/movie.gif)
+
 
 #### Using multiple zenith angles, path lengths and samples around origin
 The parameters 'zenithAngles', 'nSamplesAroundOrigin' and 'pathLengths' **must all have the same number of inputs**. Multiple inputs are given to a parameter like so: 
