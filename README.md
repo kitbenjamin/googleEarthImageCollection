@@ -79,8 +79,8 @@ The 'regionArea' parameters are shown diagramically below:
 ![alt text](images/region_defs.png)
 
 Images are collected by rotatating a camera around each interval 'nSamplesAroundOrigin' times. Once every image of one interval is collacted, the camera moves to the next, like this:
-![alt text](images/movie.gif)
 
+![alt text](images/movie.gif)
 
 #### Using multiple zenith angles, path lengths and samples around origin
 The parameters 'zenithAngles', 'nSamplesAroundOrigin' and 'pathLengths' **must all have the same number of inputs**. Multiple inputs are given to a parameter like so: 
