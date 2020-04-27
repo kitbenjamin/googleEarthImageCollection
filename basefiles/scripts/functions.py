@@ -53,7 +53,7 @@ def create_imageInterval_csv(imageInterval, zenithAngles, pathLengths, nSamplesA
         #run R script given the defined parameters for the current chunk - NEEDS UTM COORDINATES
         args = [str(chunk['longitudeUTM']), str(chunk['latitudeUTM']) , str(zenithAngles), str(pathLengths), 
                 str(nSamplesAroundOrigin), str(chunk['latitude']), str(chunk['longitude']), str(nThChunk)]
-        popenCmd = [RscriptLoc + str('Rscript.exe'), '--vanilla', '--no-save', 'scripts/rotateCameraAroundChunkOrigin.R']
+        popenCmd = [RscriptLoc + str('Rscript.exe'), '--vanilla', '--no-environ', '--no-init-file', 'scripts/rotateCameraAroundChunkOrigin.R']
         popenCmdwArgs = list(np.append(popenCmd, args))
         rotate = subprocess.Popen(popenCmdwArgs, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True)
         out, err = rotate.communicate()
