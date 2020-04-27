@@ -103,6 +103,7 @@ Google Earth should automatically open when imageCollection.PS1 is run. Configur
 4. The following window will appear:
 
 ![alt text](readme-images/movie_maker.png)
+
 5. You have to use the settings displayed:
  * Save images in the googleEarthOut subdirectory within the region directory you're working in
  * Make sure you select the right kml from the saved tour drop down menu. The tour kml will be called {your project name}_{number of times google earth has run}.kml
