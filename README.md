@@ -76,11 +76,11 @@ Define the Google Earth "tour" parameters: e.g. number of images, extent of the 
 | pathLengths | The path length between the camera and the center of the interval. Use in conjunction with 'zenithAngles' and 'nSamplesAroundOrigin'. | m |
 
 The 'regionArea' parameters are shown diagramically below:
-![alt text](images/region_defs.png)
+![alt text](readme-images/region_defs.png)
 
 Images are collected by rotatating a camera around each interval 'nSamplesAroundOrigin' times. Once every image of one interval is collacted, the camera moves to the next, like this:
 
-![alt text](images/movie.gif)
+![alt text](readme-images/movie.gif)
 
 #### Using multiple zenith angles, path lengths and samples around origin
 The parameters 'zenithAngles', 'nSamplesAroundOrigin' and 'pathLengths' **must all have the same number of inputs**. Multiple inputs are given to a parameter like so: 
@@ -98,10 +98,10 @@ Run imageCollection.PS1 to collect all required Google Earth images and calculat
 #### Configure Google Earth
 Google Earth should automatically open when imageCollection.PS1 is run. Configure Google Earth by:
 1. Clear and then maximise both caches [options.. -> tools -> options...] (with the buttons in the same window). 
-2. Close the small time bar in the bottom left corner of the images displayed, by clicking on the small 'x': ![alt text](images/time_bar.png)
+2. Close the small time bar in the bottom left corner of the images displayed, by clicking on the small 'x': ![alt text](readme-images/time_bar.png)
 3. Go to 'Tools -> Movie Maker". 
 4. The following window will appear:
-![alt text](images/movie_maker.png)
+![alt text](readme-images/movie_maker.png)
 5. You have to use the settings displayed:
  * Save images in the googleEarthOut subdirectory within the region directory you're working in
  * Make sure you select the right kml from the saved tour drop down menu. The tour kml will be called {your project name}_{number of times google earth has run}.kml
@@ -151,8 +151,8 @@ This file contains information about each image collected from google earth. The
 
 ## Image source area calculation
 The image source area is calculated to give a representation of the ground area observed by each camera. There are five points of interest with the camera source area. The `central` point is along the camera axis. The other points are `r1sl`, `r1sr`, `r2sr`, `r2sl`. See figures below for where these points lie on the image source area.  
-![alt text](images/viewDomCalc1.png)
-![alt text](images/viewDomCalc2.png)
+![alt text](readme-images/viewDomCalc1.png)
+![alt text](readme-images/viewDomCalc2.png)
 
 - The source area accounts for orography using the following steps:
   1. Get the height of each source area point from the google maps api 
