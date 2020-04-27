@@ -193,6 +193,7 @@ def user_rerun_decide(endStatus):
     
     if endStatus == '"crashed"':
         rerun = True
+        remove_last_image()
         print('Google Earth crashed, it shall now be reopened and movie maker can be re-run from the point of the crash')
         
     if endStatus == '"timedout"':
@@ -202,6 +203,7 @@ def user_rerun_decide(endStatus):
             print('Google Earth will not be opened again')
         elif finish == 'n':
             rerun = True
+            remove_last_image()
             print('Google Earth will be reopened and movie maker can be re-run from the point of the timeout')
         else:
             print( 'unrecognised input, assuming movie maker unfinished. Google Earth will be reopened.')
@@ -459,3 +461,10 @@ def attempt_continue(stageCode, toBeDone, n):
     # if soethings gone really wrong
     if stageCode == 6:
         print('please review files in simulation directory and delete any unneeded files.')
+
+def remove_last_image():
+    #remove last image taken by GE. should be done when GE crashes.
+    files = [f for f in os.listdir('googleEarthOut') if re.match(r'movie*', f)]
+    if len(files) > 0:
+        os.remove(os.path.join('googleEarthOut', files[-1:][0]))
+
