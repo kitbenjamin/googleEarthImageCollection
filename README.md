@@ -7,7 +7,7 @@
 
 ### Definitions
 * Region: The overall area that you want to get Google Earth images for.
-* Interval: The region is split into an evenly spaced grid of intervals.
+* Interval: The region is split into a regular grid of intervals.
 
 ## Dependencies
 ### OS:
