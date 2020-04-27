@@ -22,9 +22,15 @@ import re
 def create_imageInterval(latPointsGrid, lonPointsGrid, range0, altitudeMode, lookAtDuration):
     # get the camera positions required 
     imageInterval=[]
+    #import pdb; pdb.set_trace()
     #create chunklist
     for i in xrange(0, len(latPointsGrid)):
-        for v in xrange(0, len(latPointsGrid[i])):
+	    #make "lawnmower" pattern back and forth along lat
+        if i % 2 == 0:
+            latRange = xrange(0, len(latPointsGrid[i]))
+        else:
+            latRange = reversed(xrange(0, len(latPointsGrid[i])))
+        for v in latRange:
             d = {}
             d['latitudeUTM'] = latPointsGrid[i][v]
             d['longitudeUTM'] = lonPointsGrid[i][v]
@@ -38,7 +44,6 @@ def create_imageInterval_csv(imageInterval, zenithAngles, pathLengths, nSamplesA
     #create the original chunk csv
     #nThChunk - track the chunk number that we are on - need this to keep track of the camera ID numbers
     nThChunk = -1
-    
     #create a master csv that has camera and image imrmation 
     for chunk in imageInterval:
         nThChunk += 1

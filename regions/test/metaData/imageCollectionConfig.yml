@@ -1,0 +1,28 @@
+---
+projectName: googleEarthImageCollector
+scriptDirectories:
+    pythonDir: C://Python27//
+    RDir: C://Program Files//R//R-3.6.1//bin//
+    googleEarthDir: C://Program Files//Google//Google Earth Pro//client//
+projection: +proj=utm +zone=31N, +north +ellps=WGS84 +datum=WGS84 +units=m +no_defs
+regionArea:
+    latStart: 5712800 
+    latSize: 100
+    latIntervalSize: 25
+    lonStart: 284450
+    lonSize: 100
+    lonIntervalSize: 25
+cameraOptions:
+    horizFov: 40
+    range0: 0
+    altitudeMode: absolute
+    lookAtDuration: 0.1
+    zenithAngles: 
+    - 0
+    nSamplesAroundOrigin: 
+    - 1
+    pathLengths: 
+    - 260
+googleEarthOptions:
+    GEtimeout: 100000
+...
