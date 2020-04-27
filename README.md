@@ -101,6 +101,7 @@ Google Earth should automatically open when imageCollection.PS1 is run. Configur
 2. Close the small time bar in the bottom left corner of the images displayed, by clicking on the small 'x': ![alt text](readme-images/time_bar.png)
 3. Go to 'Tools -> Movie Maker". 
 4. The following window will appear:
+
 ![alt text](readme-images/movie_maker.png)
 5. You have to use the settings displayed:
  * Save images in the googleEarthOut subdirectory within the region directory you're working in
