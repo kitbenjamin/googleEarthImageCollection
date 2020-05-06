@@ -26,6 +26,10 @@ Push-Location $dir
 Remove-Item $LOG
 Start-Transcript -path $LOG -append -Force
 & "${PyscriptLocstr}/python.exe" "scripts/implementkmlCreator.py"
+Remove-Item kmlFiles.7z -ErrorAction Ignore
+.\scripts\7za.exe a kmlFiles.7z kmlFiles/* 
+Remove-Item kmlFiles/* -Recurse
+Remove-Item kmlFiles
 Stop-Transcript
 Pop-Location
 
