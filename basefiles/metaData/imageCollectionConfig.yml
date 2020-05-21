@@ -4,7 +4,10 @@ scriptDirectories:
     pythonDir: C://Program Files//Python27//
     RDir: C://Program Files//R//R-3.6.1//bin//
     googleEarthDir: C://Program Files//Google//Google Earth Pro//client//
+# define UTM crs
 projection: +proj=utm +zone=31N, +north +ellps=WGS84 +datum=WGS84 +units=m +no_defs
+# define region extent
+# lat and lon are UTM Northing and Easting respectively
 regionArea:
     latStart: 5712800 
     latSize: 400
