@@ -1,20 +1,52 @@
-﻿#get yaml config
+﻿if (Get-Module -ListAvailable -Name powershell-yaml) {
+    Write-Host "powershell-yaml already installed"
+} 
+else {
+    Write-Host "powershell-yaml must be installed using: Install-Module powershell-yaml -Scope CurrentUser"
+	Read-Host "Press enter to exit..."
+	exit
+}
 
-#from yaml
-$autoMouseClickerDir="C:\Program Files (x86)\Auto Mouse Clicker v10.1"
+#$scriptpath = $MyInvocation.MyCommand.Path
+#$dir = Split-Path $scriptpath
+#Push-Location $dir
 
-if yaml$useAutoMouseClicker== False: you have not set useAutoMouseClicker to True
+[string[]]$fileContent = Get-Content "metaData/imageCollectionConfig.yml"
+$content = ''
+foreach ($line in $fileContent) { $content = $content + "`n" + $line }
+$yaml = ConvertFrom-YAML $content
 
-if !file exists $autoMouseClickerDir\Recorder\MouseClickRecorder.exe stop
+if(!$yaml['autoMouseClicker']['useAutoMouseClicker']){
+ [System.Windows.MessageBox]::Show('Please set `useAutoMouseClicker` to `True` in imageCollectionConfig.yml')
+ exit(0)
+}
 
-#look for existing recordings
-#if recording found, print ("there is 1 recording that will be deleted")
-#would you like to make new recording?
-#if no, quit
-#if yes
-#dialog: the program will start. and GE will start with a dummy kml. 
-#do the mouse recording to run a tour
-#& $autoMouseClickerDir\Recorder\MouseClickRecorder.exe 
+[System.Windows.MessageBox]::Show(
+' CLOSE GOOGEL EARTH AND ANY MOUSE CLICKING SOFTWARE. Then follow these steps after you hit OK:
+ 1) Check Google Earth has auto loaded. Keep Google Earth maximised.
+ 2) Mouse click record will also open. Start recording mouse (F9).
+ 3) Click through GE to start the tour as normal (pause,rewind then close [cross] the currently playing tour -> Tools -> Movie Maker -> Select `a saved tour:` -> Create Movie)
+ 4) Stop recording mouse (F10)
+ 5) Save the recording as: metaData/mouseMacro/mouse_macro.mcs or as defined in the params yaml `macroFileName`
+ 6) Check the macro runs OK
+ 7) Clear the output images from the testing, once happy')
 
+$GEexe = $yaml['scriptDirectories']['googleEarthDir'] + "googleearth.exe"
 
+$AMCrec = $yaml['autoMouseClicker']['progFullDir'] + "\Recorder\MouseClickRecorder.exe"
 
+$AMCrun = $yaml['autoMouseClicker']['progFullDir'] + "\AmcEngine.exe"
+
+$AMCfile = $yaml['autoMouseClicker']['macroFileName']
+$AMCfileFull = $dir + "\" + $AMCfile
+
+$sampleTour=$dir + "\metaData\mouseMacro\sample_tour.kml"
+
+Start-Process $AMCrec
+Start-Process $GEexe -WindowStyle maximized -ArgumentList $sampleTour  -Wait
+
+[System.Windows.MessageBox]::Show('After you hit OK, Google Earth will open. After 15 s the macro will run.')
+sleep 0.5
+Start-Process $GEexe -WindowStyle maximized -ArgumentList $sampleTour
+sleep 15
+Start-Process $AMCrun -ArgumentList $AMCfileFull

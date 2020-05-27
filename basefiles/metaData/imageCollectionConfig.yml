@@ -30,6 +30,6 @@ googleEarthOptions:
     GEtimeout: 100000
 autoMouseClicker:
     useAutoMouseClicker: False
-    exeFullDir: NA
-    autoMouseClickerFileName: NA
+    progFullDir: C:\Program Files (x86)\Auto Mouse Clicker v10.1
+    macroFileName: metaData\mouseMacro\mouse_macro.mcs
 ...
