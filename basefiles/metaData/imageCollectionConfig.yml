@@ -28,4 +28,8 @@ cameraOptions:
     - 260
 googleEarthOptions:
     GEtimeout: 100000
+autoMouseClicker:
+    useAutoMouseClicker: False
+    exeFullDir: NA
+    autoMouseClickerFileName: NA
 ...
