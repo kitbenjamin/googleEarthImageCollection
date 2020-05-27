@@ -7,9 +7,11 @@ else {
 	exit
 }
 
-#$scriptpath = $MyInvocation.MyCommand.Path
-#$dir = Split-Path $scriptpath
-#Push-Location $dir
+$wshell = New-Object -ComObject Wscript.Shell
+
+$scriptpath = $MyInvocation.MyCommand.Path
+$dir = Split-Path $scriptpath
+Push-Location $dir
 
 [string[]]$fileContent = Get-Content "metaData/imageCollectionConfig.yml"
 $content = ''
@@ -17,11 +19,11 @@ foreach ($line in $fileContent) { $content = $content + "`n" + $line }
 $yaml = ConvertFrom-YAML $content
 
 if(!$yaml['autoMouseClicker']['useAutoMouseClicker']){
- [System.Windows.MessageBox]::Show('Please set `useAutoMouseClicker` to `True` in imageCollectionConfig.yml')
+ $wshell.Popup('Please set `useAutoMouseClicker` to `True` in imageCollectionConfig.yml')
  exit(0)
 }
 
-[System.Windows.MessageBox]::Show(
+$text = $wshell.Popup(
 ' CLOSE GOOGEL EARTH AND ANY MOUSE CLICKING SOFTWARE. Then follow these steps after you hit OK:
  1) Check Google Earth has auto loaded. Keep Google Earth maximised.
  2) Mouse click record will also open. Start recording mouse (F9).
@@ -45,7 +47,7 @@ $sampleTour=$dir + "\metaData\mouseMacro\sample_tour.kml"
 Start-Process $AMCrec
 Start-Process $GEexe -WindowStyle maximized -ArgumentList $sampleTour  -Wait
 
-[System.Windows.MessageBox]::Show('After you hit OK, Google Earth will open. After 15 s the macro will run.')
+$wshell.Popup('After you hit OK, Google Earth will open. After 15 s the macro will run.')
 sleep 0.5
 Start-Process $GEexe -WindowStyle maximized -ArgumentList $sampleTour
 sleep 15
