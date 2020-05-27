@@ -24,13 +24,14 @@ if(!$yaml['autoMouseClicker']['useAutoMouseClicker']){
 }
 
 $text = $wshell.Popup(
-' CLOSE GOOGEL EARTH AND ANY MOUSE CLICKING SOFTWARE. Then follow these steps after you hit OK:
- 1) Check Google Earth has auto loaded. Keep Google Earth maximised.
+' CLOSE GOOGLE EARTH (GE) AND ANY MOUSE CLICKING SOFTWARE. Then follow these steps after you hit OK (this window closes when you hit OK):
+ 1) Check GE has auto loaded. Keep GE maximised.
  2) Mouse click record will also open. Start recording mouse (F9).
  3) Click through GE to start the tour as normal (pause,rewind then close [cross] the currently playing tour -> Tools -> Movie Maker -> Select `a saved tour:` -> Create Movie)
  4) Stop recording mouse (F10)
- 5) Save the recording as: metaData/mouseMacro/mouse_macro.mcs or as defined in the params yaml `macroFileName`
- 6) Check the macro runs OK
+ 5) Save the `auto mouse clicker` recording (file -> save script as... as: metaData/mouseMacro/mouse_macro.mcs or as defined in the params yaml `macroFileName`
+ 6) Follow the steps to check the macro runs OK. The macros should run some time after GE is started.
+ 7) Stop GE recording and close GE as you wish
  7) Clear the output images from the testing, once happy')
 
 $GEexe = $yaml['scriptDirectories']['googleEarthDir'] + "googleearth.exe"
@@ -47,8 +48,8 @@ $sampleTour=$dir + "\metaData\mouseMacro\sample_tour.kml"
 Start-Process $AMCrec
 Start-Process $GEexe -WindowStyle maximized -ArgumentList $sampleTour  -Wait
 
-$wshell.Popup('After you hit OK, Google Earth will open. After 15 s the macro will run.')
+$wshell.Popup('Now checking it works. After you hit OK, Google Earth will open. Don`t interact with GE: let the tour run. After 20 s the macro you just made to save the tour images should run. You can then close GE as you please.')
 sleep 0.5
 Start-Process $GEexe -WindowStyle maximized -ArgumentList $sampleTour
-sleep 15
+sleep 20
 Start-Process $AMCrun -ArgumentList $AMCfileFull

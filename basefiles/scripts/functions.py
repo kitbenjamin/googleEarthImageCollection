@@ -173,13 +173,14 @@ def run_google_earth(kmlPath):
     
     print("Here we go")
     import time
-    time.sleep(10)
+	#wait for google earth to actually boot (probable a better way to do this)
+    time.sleep(15)
     print("Here we go1")
-	#things to add
+	#run the new mouse click macro. things to add:
 	#1) "check if user actually wants to use auto clicker"
 	#2) "obvs. put in correct file paths.
 	#3) adjust user input in powershell accordingly (i.e should be no need for powershell user input)
-    subprocess.Popen(["C:/Program Files (x86)/Auto Mouse Clicker v10.1/AmcEngine.exe", "C:/Users/Roof49/Documents/GitHub/googleEarthImageCollection/regions/test/metaData/mouseMacro/mouse_macro.mcs"], shell = True)
+    subprocess.Popen(["C:/Program Files (x86)/Auto Mouse Clicker v10.1/AmcEngine.exe", "C:/Users/Roof49/Documents/GitHub/googleEarthImageCollection/regions/test1/metaData/mouseMacro/mouse_macro.mcs"], shell = True)
     print("Here we go2")
     out, err = crashTest.communicate()
     print(out)
