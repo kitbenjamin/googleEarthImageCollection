@@ -32,7 +32,7 @@ $text = $wshell.Popup(
  5) Save the macro (file -> save as as: metaData/mouseMacro/mouse_macro.mmmacro or as defined in the params yaml `macroFileName`
  6) Close GE
  7) Follow the popup window steps to check the macro runs OK. The macros should run some time after GE is started.
- 8) Stop GE recording and close GE as you wish
+ 8) Stop GE recording. Configure other GE settings (e.g. image directory, image res) then close GE
  9) Clear the output images from the testing, once happy')
 
 $GEexe = $yaml['scriptDirectories']['googleEarthDir'] + "googleearth.exe"

@@ -29,7 +29,7 @@ cameraOptions:
 googleEarthOptions:
     GEtimeout: 100000
 autoMouseClicker:
-    useAutoMouseClicker: True
+    useAutoMouseClicker: False
     progFullDir: C:\Users\Roof49\Documents\GitHub\googleEarthImageCollection\bin\MiniMouseMacro.exe
     macroFileName: metaData\mouseMacro\mouse_macro.mmmacro
     google_earth_load_time_s: 15
