@@ -1,17 +1,44 @@
-﻿1 | 330 | 767 | 1 | Mouse Movement
-2 | 328 | 767 | 25 | Left Click Release
-3 | 380 | 767 | 1687 | Left Click Down
-4 | 380 | 767 | 119 | Left Click Release
-5 | 636 | 755 | 1951 | Left Click Down
-6 | 636 | 755 | 83 | Left Click Release
-7 | 126 | 27 | 1555 | Left Click Down
-8 | 126 | 27 | 108 | Left Click Release
-9 | 158 | 129 | 778 | Left Click Down
-10 | 158 | 129 | 95 | Left Click Release
-11 | 748 | 361 | 1974 | Left Click Down
-12 | 748 | 361 | 98 | Left Click Release
-13 | 748 | 379 | 704 | Left Click Down
-14 | 748 | 379 | 95 | Left Click Release
-15 | 892 | 617 | 2370 | Left Click Down
-16 | 892 | 617 | 119 | Left Click Release
-17 | 1262 | 497 | 2419 | Left Click Down
+﻿1 | 1222 | 904 | 0 | Mouse Movement
+2 | 1222 | 904 | 79 | Left Click Release
+3 | 534 | 977 | 2720 | Mouse Movement
+4 | 527 | 977 | 24 | Mouse Movement
+5 | 527 | 979 | 25 | Mouse Movement
+6 | 502 | 979 | 49 | Mouse Movement
+7 | 497 | 982 | 19 | Mouse Movement
+8 | 477 | 984 | 15 | Mouse Movement
+9 | 477 | 987 | 17 | Mouse Movement
+10 | 462 | 987 | 22 | Mouse Movement
+11 | 452 | 989 | 12 | Mouse Movement
+12 | 447 | 989 | 17 | Mouse Movement
+13 | 439 | 989 | 172 | Mouse Movement
+14 | 439 | 987 | 407 | Left Click Release
+15 | 526 | 987 | 637 | Left Click Down
+16 | 524 | 987 | 57 | Mouse Movement
+17 | 517 | 987 | 19 | Mouse Movement
+18 | 509 | 987 | 35 | Mouse Movement
+19 | 509 | 985 | 19 | Mouse Movement
+20 | 492 | 985 | 12 | Mouse Movement
+21 | 464 | 985 | 34 | Mouse Movement
+22 | 457 | 985 | 17 | Mouse Movement
+23 | 437 | 982 | 341 | Mouse Movement
+24 | 437 | 982 | 344 | Left Click Release
+25 | 706 | 975 | 2089 | Left Click Down
+26 | 706 | 975 | 63 | Left Click Release
+27 | 134 | 32 | 1370 | Left Click Down
+28 | 134 | 32 | 123 | Left Click Release
+29 | 156 | 132 | 777 | Left Click Down
+30 | 156 | 132 | 89 | Left Click Release
+31 | 886 | 472 | 1262 | Left Click Down
+32 | 886 | 472 | 101 | Left Click Release
+33 | 916 | 472 | 765 | Left Click Down
+34 | 916 | 472 | 118 | Left Click Release
+35 | 1074 | 722 | 316 | Keypress tab
+36 | 1074 | 722 | 316 | Keypress tab
+37 | 1074 | 722 | 316 | Keypress tab
+38 | 1074 | 722 | 316 | Keypress tab
+39 | 1074 | 722 | 316 | Keypress tab
+40 | 1074 | 722 | 316 | Keypress tab
+41 | 1074 | 722 | 316 | Keypress tab
+42 | 1074 | 722 | 316 | Keypress tab
+43 | 1074 | 722 | 316 | Keypress tab
+44 | 1074 | 722 | 316 | Keypress enter
