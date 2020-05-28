@@ -1,7 +1,7 @@
 ---
 projectName: googleEarthImageCollector
 scriptDirectories:
-    pythonDir: C://Program Files//Python27//
+    pythonDir: C://Python27//
     RDir: C://Program Files//R//R-3.6.1//bin//
     googleEarthDir: C://Program Files//Google//Google Earth Pro//client//
 # define UTM crs
@@ -29,7 +29,8 @@ cameraOptions:
 googleEarthOptions:
     GEtimeout: 100000
 autoMouseClicker:
-    useAutoMouseClicker: False
-    progFullDir: C:\Program Files (x86)\Auto Mouse Clicker v10.1
-    macroFileName: metaData\mouseMacro\mouse_macro.mcs
+    useAutoMouseClicker: True
+    progFullDir: C:\Users\Roof49\Documents\GitHub\googleEarthImageCollection\bin\MiniMouseMacro.exe
+    macroFileName: metaData\mouseMacro\mouse_macro.mmmacro
+    google_earth_load_time_s: 15
 ...

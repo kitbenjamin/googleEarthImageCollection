@@ -170,24 +170,35 @@ def run_google_earth(kmlPath):
      #open google earth and check for google earth crash
     crashTest = subprocess.Popen([RscriptLoc + str('Rscript.exe'), '--vanilla', '--no-save', 'scripts/GEcrashTest.R', GEdir, kmlPath, str(GEtimeout)],
                                  stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True)
-    
-    print("Here we go")
-    import time
-	#wait for google earth to actually boot (probable a better way to do this)
-    time.sleep(15)
-    print("Here we go1")
-	#run the new mouse click macro. things to add:
-	#1) "check if user actually wants to use auto clicker"
-	#2) "obvs. put in correct file paths.
-	#3) adjust user input in powershell accordingly (i.e should be no need for powershell user input)
-    subprocess.Popen(["C:/Program Files (x86)/Auto Mouse Clicker v10.1/AmcEngine.exe", "C:/Users/Roof49/Documents/GitHub/googleEarthImageCollection/regions/test1/metaData/mouseMacro/mouse_macro.mcs"], shell = True)
-    print("Here we go2")
+    #TODO: add here a check to see if it is the first run. if so, don't run run_clicker_macro()
+    if autoMouseClicker_use_macro_bool:
+        import time
+        time.sleep(google_earth_load_time_s)
+        run_clicker_macro()
+
     out, err = crashTest.communicate()
     print(out)
     #print(err)
     endStatusSplit = list(out.split(" ")) 
     endStatus = endStatusSplit[-1].rstrip('\r|\n')
     return endStatus
+#%%
+def run_clicker_macro():
+
+    #things to add
+	#1) DONE "check if user actually wants to use auto clicker"
+	#2) DONE "obvs. put in correct file paths.
+	#3) adjust user input in powershell accordingly (i.e should be no need for powershell user input when "google earth crashed, it will now continue.." stuff)
+	#4) I think there should remain user input "y/n" when "google earth was closed, is it finished?"
+    
+    import time
+    baseDir = os.getcwd()
+    print(autoMouseClicker_fullDir)
+    mcs_file_full = os.path.join(baseDir, autoMouseClicker_relative_mcs_name)
+    print(mcs_file_full)
+    MCprocess = subprocess.Popen([autoMouseClicker_fullDir, mcs_file_full], shell = True)
+    time.sleep(30)
+    MCprocess.terminate()	
 #%%
 def user_rerun_decide(endStatus):
             #use end status to let user decide whether to re run
