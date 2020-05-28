@@ -79,4 +79,5 @@ autoMouseClicker_fullDir = meta['autoMouseClicker']['progFullDir']
 autoMouseClicker_relative_mcs_name = meta['autoMouseClicker']['macroFileName']
 autoMouseClicker_use_macro_bool = meta['autoMouseClicker']['useAutoMouseClicker']
 google_earth_load_time_s = float(meta['autoMouseClicker']['google_earth_load_time_s'])
+autoMouseClicker_time_to_complete_s = float(meta['autoMouseClicker']['autoMouseClicker_time_to_complete_s'])
 ####end of input parameters####

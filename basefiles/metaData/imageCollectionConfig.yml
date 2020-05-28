@@ -29,8 +29,12 @@ cameraOptions:
 googleEarthOptions:
     GEtimeout: 100000
 autoMouseClicker:
+autoMouseClicker:
     useAutoMouseClicker: False
-    progFullDir: C:\Users\Roof49\Documents\GitHub\googleEarthImageCollection\bin\MiniMouseMacro.exe
+    progFullDir: C:\Users\micromet\Documents\GitHub\googleEarthImageCollection\bin\MiniMouseMacro.exe
     macroFileName: metaData\mouseMacro\mouse_macro.mmmacro
+    #how long does GE approx take to fully load
     google_earth_load_time_s: 15
+    #how long does the macro take to run
+    autoMouseClicker_time_to_complete_s: 60
 ...

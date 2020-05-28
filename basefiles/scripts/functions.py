@@ -197,7 +197,7 @@ def run_clicker_macro():
     mcs_file_full = os.path.join(baseDir, autoMouseClicker_relative_mcs_name)
     print(mcs_file_full)
     MCprocess = subprocess.Popen([autoMouseClicker_fullDir, mcs_file_full])
-    time.sleep(30)
+    time.sleep(autoMouseClicker_time_to_complete_s)
     MCprocess.terminate()	
 #%%
 def user_rerun_decide(endStatus):
