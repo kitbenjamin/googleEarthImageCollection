@@ -31,7 +31,7 @@ googleEarthOptions:
     #how many times can GE crash before user is prompted?
     maxNumberOfRestarts: 999
 autoMouseClicker:
-autoMouseClicker:
+    #export zone!
     useAutoMouseClicker: False
     progFullDir: C:\Users\micromet\Documents\GitHub\googleEarthImageCollection\bin\MiniMouseMacro.exe
     macroFileName: metaData\mouseMacro\mouse_macro.mmmacro
