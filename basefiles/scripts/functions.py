@@ -167,19 +167,15 @@ def gen_kml(KMLname, toBeDone, n, imageInterval):
     return kmlPath
 #%%
 def run_google_earth(kmlPath):
-
+     #open google earth and check for google earth crash
+    crashTest = subprocess.Popen([RscriptLoc + str('Rscript.exe'), '--vanilla', '--no-save', 'scripts/GEcrashTest.R', GEdir, kmlPath, str(GEtimeout)],
+                                 stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True)
     #TODO: add here a check to see if it is the first run. if so, don't run run_clicker_macro()
     if autoMouseClicker_use_macro_bool:
         import time
         time.sleep(google_earth_load_time_s)
-        MCprocess = run_clicker_macro()
+        run_clicker_macro()
 
-     #open google earth and check for google earth crash
-    crashTest = subprocess.Popen([RscriptLoc + str('Rscript.exe'), '--vanilla', '--no-save', 'scripts/GEcrashTest.R', GEdir, kmlPath, str(GEtimeout)],
-                                 stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True)
-    
-    time.sleep(autoMouseClicker_time_to_complete_s)
-    MCprocess.terminate()
     out, err = crashTest.communicate()
     print(out)
     #print(err)
@@ -201,8 +197,8 @@ def run_clicker_macro():
     mcs_file_full = os.path.join(baseDir, autoMouseClicker_relative_mcs_name)
     print(mcs_file_full)
     MCprocess = subprocess.Popen([autoMouseClicker_fullDir, mcs_file_full])
-    time.sleep(1)
-    return MCprocess	
+    time.sleep(autoMouseClicker_time_to_complete_s)
+    MCprocess.terminate()	
 #%%
 def user_rerun_decide(endStatus):
             #use end status to let user decide whether to re run
@@ -285,14 +281,14 @@ def rerun_get_GE_images(KMLname, imgTab, n, imageInterval, ps_crash = False):
             if rerun != True:
                 break
             # if been rerun multiple of 20 times ask if still want to continue
-            if n % maxNumberOfRestarts == 0:
-                finish = raw_input('Google Earth has run ' + str(n) +' times, would you like to continue the movie maker [y/n] ')
+            if n % 20 == 0:
+                finish = raw_input('Google Earth has run ' +n+' times, would you like to continue the movie maker [y/n] ')
                 if finish == 'y':
                     rerun = True
                 elif finish == 'n':
                     rerun = False
                 else:
-                    print('Unrecognised input, will continue')
+                    print('unrecognised input, will continue')
                     rerun = True
         # only remove the last image if the process was completed
         else:

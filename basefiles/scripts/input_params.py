@@ -74,7 +74,6 @@ GEdir = meta['scriptDirectories']['googleEarthDir']
 GEdir = GEdir + 'googleearth.exe'
 #time before google earth will timeout
 GEtimeout = meta['googleEarthOptions']['GEtimeout']
-maxNumberOfRestarts = int(meta['googleEarthOptions']['maxNumberOfRestarts'])
 #mouse clicker macros
 autoMouseClicker_fullDir = meta['autoMouseClicker']['progFullDir']
 autoMouseClicker_relative_mcs_name = meta['autoMouseClicker']['macroFileName']
