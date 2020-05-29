@@ -1,0 +1,8 @@
+- begin your region run as usual but with mouse macro "False" in params
+- quit program when GE first starts
+- load GE via kml file
+- run tour maker with highest image setting and make it crash
+- run mini mouse macro (bin/*.exe)
+- run tour maker with highest image setting again
+- record macro you should get GE pop up saying "GE crash detected". run macro including these clicks.
+- save macro and set yml params accordingly (also set macro use to "True")

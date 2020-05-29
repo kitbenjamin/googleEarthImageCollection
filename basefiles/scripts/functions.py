@@ -168,9 +168,9 @@ def gen_kml(KMLname, toBeDone, n, imageInterval):
 #%%
 def run_google_earth(kmlPath):
 
+    import time
     #TODO: add here a check to see if it is the first run. if so, don't run run_clicker_macro()
     if autoMouseClicker_use_macro_bool:
-        import time
         time.sleep(google_earth_load_time_s)
         MCprocess = run_clicker_macro()
 
@@ -178,8 +178,10 @@ def run_google_earth(kmlPath):
     crashTest = subprocess.Popen([RscriptLoc + str('Rscript.exe'), '--vanilla', '--no-save', 'scripts/GEcrashTest.R', GEdir, kmlPath, str(GEtimeout)],
                                  stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True)
     
-    time.sleep(autoMouseClicker_time_to_complete_s)
-    MCprocess.terminate()
+    if autoMouseClicker_use_macro_bool:
+        time.sleep(autoMouseClicker_time_to_complete_s)
+        MCprocess.terminate()
+
     out, err = crashTest.communicate()
     print(out)
     #print(err)
