@@ -196,8 +196,13 @@ def run_clicker_macro():
     print(autoMouseClicker_fullDir)
     mcs_file_full = os.path.join(baseDir, autoMouseClicker_relative_mcs_name)
     print(mcs_file_full)
+<<<<<<< HEAD
     MCprocess = subprocess.Popen([autoMouseClicker_fullDir, mcs_file_full])
     time.sleep(autoMouseClicker_time_to_complete_s)
+=======
+    MCprocess = subprocess.Popen([autoMouseClicker_fullDir, mcs_file_full], shell = True)
+    time.sleep(30)
+>>>>>>> parent of 6b1bfc0... fixes
     MCprocess.terminate()	
 #%%
 def user_rerun_decide(endStatus):
