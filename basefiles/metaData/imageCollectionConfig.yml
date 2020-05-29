@@ -28,6 +28,8 @@ cameraOptions:
     - 260
 googleEarthOptions:
     GEtimeout: 100000
+    #how many times can GE crash before user is prompted?
+    maxNumberOfRestarts: 999
 autoMouseClicker:
 autoMouseClicker:
     useAutoMouseClicker: False
