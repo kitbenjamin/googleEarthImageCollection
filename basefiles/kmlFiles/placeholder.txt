@@ -1,1 +1,0 @@
-This file has no use apart from to create this subdirectory in the github repository.
