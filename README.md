@@ -2,14 +2,16 @@
 
 ## Overview
 * Automate the collection of Google Earth images for a specified area and using specified view angles.
-* Handles Google Earth crashes
-* Viewing area, location and rotation of each camera is calculated. 
+* Handles Google Earth crashes and can automatically rerun after crash (experimental)
+* Determination of camera viewing area, location and rotation 
 
 ### Definitions
-* Region: The overall area that you want to get Google Earth images for.
-* Interval: The region is split into a regular grid of intervals.
+* Region: The overall area that you want to get Google Earth images for
+* Interval: The region is split into a regular grid of intervals
+* Google Earth: Google Earth Pro *desktop version*
 
 ## Dependencies
+This repo is not designed as a packaged "out of the box" working program. It is a collction of research scripts and little development time is spend making sure if works on the nth computer. The user will have to spend some time making sure all of the dependencies are met - sorry!
 ### OS:
  * Windows (tested on W10)
 ### Software:
