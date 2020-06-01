@@ -1,0 +1,80 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20200601172159
+Username: SWPC7062\micromet
+RunAs User: SWPC7062\micromet
+Configuration Name: 
+Machine: SWPC7062 (Microsoft Windows NT 10.0.17763.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -Command if((Get-ExecutionPolicy ) -ne 'AllSigned') { Set-ExecutionPolicy -Scope Process Bypass }; & 'C:\Users\micromet\Documents\GitHub\googleEarthImageCollection\basefiles\imageCollection.PS1'
+Process ID: 58008
+PSVersion: 5.1.17763.1007
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.17763.1007
+BuildVersion: 10.0.17763.1007
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is LOG\LOG_imageCollection.txt
+Traceback (most recent call last):
+  File "scripts/implementkmlCreator.py", line 34, in <module>
+    csvFiles = os.listdir('imageInterval')
+WindowsError: [Error 3] The system cannot find the path specified: 'imageInterval/*.*'
+
+7-Zip (A) 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+Scanning
+
+
+kmlFiles:  WARNING: The system cannot find the file specified.
+
+
+
+Creating archive kmlFiles.7z
+
+
+
+WARNINGS for files:
+
+kmlFiles : The system cannot find the file specified.
+
+----------------
+WARNING: Cannot find 1 file
+Remove-Item : Cannot find path 'C:\Users\micromet\Documents\GitHub\googleEarthImageCollection\basefiles\kmlFiles' 
+because it does not exist.
+At C:\Users\micromet\Documents\GitHub\googleEarthImageCollection\basefiles\imageCollection.PS1:31 char:1
++ Remove-Item kmlFiles/* -Recurse
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\microm...efiles\kmlFiles:String) [Remove-Item], 
+ItemNotFoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.RemoveItemCommand
+Remove-Item : Cannot find path 'C:\Users\micromet\Documents\GitHub\googleEarthImageCollection\basefiles\kmlFiles'
+because it does not exist.
+At C:\Users\micromet\Documents\GitHub\googleEarthImageCollection\basefiles\imageCollection.PS1:31 char:1
++ Remove-Item kmlFiles/* -Recurse
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\microm...efiles\kmlFiles:String) [Remove-Item], ItemNotFoundEx
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.RemoveItemCommand
+
+Remove-Item : Cannot find path 'C:\Users\micromet\Documents\GitHub\googleEarthImageCollection\basefiles\kmlFiles' 
+because it does not exist.
+At C:\Users\micromet\Documents\GitHub\googleEarthImageCollection\basefiles\imageCollection.PS1:32 char:1
++ Remove-Item kmlFiles
++ ~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\microm...efiles\kmlFiles:String) [Remove-Item], 
+ItemNotFoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.RemoveItemCommand
+Remove-Item : Cannot find path 'C:\Users\micromet\Documents\GitHub\googleEarthImageCollection\basefiles\kmlFiles'
+because it does not exist.
+At C:\Users\micromet\Documents\GitHub\googleEarthImageCollection\basefiles\imageCollection.PS1:32 char:1
++ Remove-Item kmlFiles
++ ~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\microm...efiles\kmlFiles:String) [Remove-Item], ItemNotFoundEx
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.RemoveItemCommand
+
+**********************
+Windows PowerShell transcript end
+End time: 20200601172200
+**********************

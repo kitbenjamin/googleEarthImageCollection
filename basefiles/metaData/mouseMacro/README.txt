@@ -10,3 +10,10 @@ The MM exe will use the yml parameter file name: *.mmacro.
 6) run macro including all clicks required to get the tour running again.
 7) save macro in metaData\, and set yml params accordingly (also set macro use to "True")
 8) may need to manually edit the macro (it's a plain text file) to tweak the click timings.
+
+
+
+tip: force GE crash by powershell:
+
+PS C:\Users\micromet>  $p = Get-Process -Name "googleearth"
+PS C:\Users\micromet> Stop-Process -InputObject $p
