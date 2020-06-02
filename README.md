@@ -98,6 +98,11 @@ if you wanted to take images at zenith angles 0 and 45. Correspondingly, nSample
 Run imageCollection.PS1 to collect all required Google Earth images and calculate their view domains. imageCollection.PS1 creates the imageIntervalTable.csv file within the 'imageInterval' directory. This file contains information on the camera position of all images that will be created. A KML file is also generated that is automatically loaded into Google Earth. Using this KML, a sequence of images of the specified area can be created. 
 
 #### Configure Google Earth
+
+Some advised Google Earth settings:
+
+![alt text](readme-images/google_earth_advised_settings.png)
+
 Google Earth should automatically open when imageCollection.PS1 is run. Configure Google Earth by:
 1. Clear and then maximise both caches [options.. -> tools -> options...] (with the buttons in the same window). 
 2. Close the small time bar in the bottom left corner of the images displayed, by clicking on the small 'x': ![alt text](readme-images/time_bar.png)
