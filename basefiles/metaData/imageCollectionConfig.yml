@@ -9,23 +9,26 @@ projection: +proj=utm +zone=31N, +north +ellps=WGS84 +datum=WGS84 +units=m +no_d
 # define region extent
 # lat and lon are UTM Northing and Easting respectively
 regionArea:
-    latStart: 5712800 
-    latSize: 400
+    latStart: 5711000
+    latSize: 2000
     latIntervalSize: 150
-    lonStart: 284450
-    lonSize: 350
+    lonStart: 284600
+    lonSize: 2000
     lonIntervalSize: 150
 cameraOptions:
-    horizFov: 40
+    horizFov: 50
     range0: 0
     altitudeMode: absolute
     lookAtDuration: 0.1
     zenithAngles: 
+    - 1
     - 45
     nSamplesAroundOrigin: 
-    - 34
+    - 1
+    - 4
     pathLengths: 
-    - 260
+    - 600
+    - 600
 googleEarthOptions:
     GEtimeout: 100000
     maxNumberOfRestarts: 999
