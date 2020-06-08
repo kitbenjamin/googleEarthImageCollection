@@ -21,13 +21,13 @@ cameraOptions:
     altitudeMode: absolute
     lookAtDuration: 0.1
     zenithAngles: 
-    - 1
-    - 45
+    - 0
+    - 40
     nSamplesAroundOrigin: 
     - 1
     - 4
     pathLengths: 
-    - 600
+    - 550
     - 600
 googleEarthOptions:
     GEtimeout: 100000
