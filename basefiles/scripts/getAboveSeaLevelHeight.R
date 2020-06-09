@@ -1,14 +1,15 @@
 rawHeightAboveSeaLevelHeightFromGoogleAPI <- function(WGS84lat, WGS84lon, return.call = "json", 
-                                                         apiKey = "AIzaSyDffqeQjNl5L2zhmlkzu4Cjn8IntW7TvPs",
+                                                         apiKey = "AIzaSyChsbAa2YMtUBjFNdPNZkuIsTGvHsx21J4",
                                                          verbose = FALSE){
   suppressWarnings(suppressMessages(require(RCurl)))
   suppressWarnings(suppressMessages(require(RJSONIO)))
   #get *single* height above sea level [has capability of multiple returns but CBA]
   root <- "https://maps.googleapis.com/maps/api/elevation/"
   address <- paste(root, return.call, "?locations=", WGS84lat, ",",WGS84lon, "&key=",apiKey, sep = "")
-  if(verbose) print(address)
+  if (verbose) print(address)
   doc <- getURL(address)
   x <- fromJSON(doc,simplify = FALSE)
+  if (x$status != "OK") stop("apiKey error")
   return(x)
 }
 
