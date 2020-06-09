@@ -1,5 +1,5 @@
 rawHeightAboveSeaLevelHeightFromGoogleAPI <- function(WGS84lat, WGS84lon, return.call = "json", 
-                                                         apiKey = "AIzaSyChsbAa2YMtUBjFNdPNZkuIsTGvHsx21J4",
+                                                         apiKey = "AIzaSyDiklf_BgSg67hfNzrJXEWeNcgrOXQzRGY",
                                                          verbose = FALSE){
   suppressWarnings(suppressMessages(require(RCurl)))
   suppressWarnings(suppressMessages(require(RJSONIO)))
