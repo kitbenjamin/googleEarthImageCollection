@@ -96,7 +96,10 @@ if len(runDirs) > 0:
             runNo.append(int(i[3]))
             runCsvData = pd.concat([runCsvData, runDF], axis = 0, ignore_index=True)
         toBeDone = imgMeta.iloc[len(runCsvData):]
-        n = max(runNo) + 1
+        if len(runNo) == 0:
+            n = 1
+        else:
+            n = max(runNo) + 1
 #%%
 #fixing 
 if stageCode == 0:

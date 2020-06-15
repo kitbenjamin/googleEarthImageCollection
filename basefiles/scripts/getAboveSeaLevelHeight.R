@@ -21,7 +21,7 @@ formatHeightAboveSeaLevelHeightFromGoogleAPI <- function(heightJSON){
 
 
 getHeightAboveSeaLevelFromGoogleAPI <- function(WGS84lat, WGS84lon, return.call = "json", 
-                                                apiKey = "AIzaSyDffqeQjNl5L2zhmlkzu4Cjn8IntW7TvPs",
+                                                apiKey = "AIzaSyDiklf_BgSg67hfNzrJXEWeNcgrOXQzRGY",
                                                 verbose = FALSE){
   
   heightJSON <- rawHeightAboveSeaLevelHeightFromGoogleAPI(WGS84lat, WGS84lon)
@@ -29,7 +29,7 @@ getHeightAboveSeaLevelFromGoogleAPI <- function(WGS84lat, WGS84lon, return.call 
 }
 
 multipleRawHeightAboveSeaLevelHeightFromGoogleAPI <- function(twoDlatlons, return.call = "json", 
-                                                      apiKey = "AIzaSyDffqeQjNl5L2zhmlkzu4Cjn8IntW7TvPs",
+                                                      apiKey = "AIzaSyDiklf_BgSg67hfNzrJXEWeNcgrOXQzRGY",
                                                       verbose = FALSE){
   suppressWarnings(suppressMessages(require(RCurl)))
   suppressWarnings(suppressMessages(require(RJSONIO)))
@@ -41,6 +41,7 @@ multipleRawHeightAboveSeaLevelHeightFromGoogleAPI <- function(twoDlatlons, retur
   if(verbose) print(address)
   doc <- getURL(address)
   x <- fromJSON(doc,simplify = FALSE)
+  if (x$status != "OK") stop("apiKey error")
   return(x)
 }
 
@@ -50,7 +51,7 @@ multipleFormatHeightAboveSeaLevelHeightFromGoogleAPI <- function(heightJSON){
 }
 
 getMultipleHeightAboveSeaLevelFromGoogleAPI <- function(twoDlatlons, return.call = "json", 
-                                                apiKey = "AIzaSyDffqeQjNl5L2zhmlkzu4Cjn8IntW7TvPs",
+                                                apiKey = "AIzaSyDiklf_BgSg67hfNzrJXEWeNcgrOXQzRGY",
                                                 verbose = FALSE){
   
   heightJSON <- multipleRawHeightAboveSeaLevelHeightFromGoogleAPI(twoDlatlons)
