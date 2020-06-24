@@ -63,7 +63,7 @@ if stageCode == 4 or stageCode == 5:
             crashpoint = 'images and run csv need to be moved'
     # if there should be images to create but there's no run file 
     elif len(run_files) == 0:
-        nPhotos = np.sum([len(os.listdir('googleEarthOut'+'/'+i)) - 1 for i in runDirs])
+        nPhotos = sum([len(pd.read_csv('googleEarthOut/'+i+'/imageIntervalTable_'+i+'.csv')) for i in runDirs])
         if len(imgMeta) > nPhotos:
             stageCode = 1
             crashpoint = 'images havent been created for next run'
@@ -93,7 +93,7 @@ if len(runDirs) > 0:
         for i in runDirs[1:]:
             runDF = pd.read_csv('googleEarthOut/'+i+'/imageIntervalTable_'+i+'.csv')
             runDF['run'] = i
-            runNo.append(int(i[3]))
+            runNo.append(int(re.findall(r'\d+', i)[0]))
             runCsvData = pd.concat([runCsvData, runDF], axis = 0, ignore_index=True)
         toBeDone = imgMeta.iloc[len(runCsvData):]
         if len(runNo) == 0:
