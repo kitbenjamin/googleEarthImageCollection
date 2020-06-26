@@ -31,11 +31,13 @@ getHeightAboveSeaLevelFromGoogleAPI <- function(WGS84lat, WGS84lon, return.call 
 
 GM_aslheight_api_call_chunk <- function(twoDlatlons, return.call = "json", 
                                         apiKey = "AIzaSyDiklf_BgSg67hfNzrJXEWeNcgrOXQzRGY",
-                                        verbose = FALSE){
+                                        verbose = FALSE, latlonDigits = 7){
+  
   suppressWarnings(suppressMessages(require(RCurl)))
   suppressWarnings(suppressMessages(require(RJSONIO)))
-  pasted <- apply(twoDlatlons, 1, function(x){paste0(x[1], ',', x[2])})
-  toSubmit <- paste0(pasted, collapse = '|')
+  twoDlatlons_digits <- apply(twoDlatlons, 2, function(x) format(x, digits = latlonDigits, scientific = FALSE))
+  pasted <- apply(twoDlatlons_digits, 1, function(x){paste0(x[1], ',', x[2])})
+  toSubmit <- gsub(" ", "", paste0(pasted, collapse = '|'))
   #get *single* height above sea level [has capability of multiple returns but CBA]
   root <- "https://maps.googleapis.com/maps/api/elevation/"
   address <- paste(root, return.call, "?locations=", toSubmit, "&key=", apiKey, sep = "")
