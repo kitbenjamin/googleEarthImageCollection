@@ -32,6 +32,16 @@ cameraOptions:
 googleEarthOptions:
     GEtimeout: 100000
     maxNumberOfRestarts: 999
+#google maps elevation api is used to get rasterised above sea level heights for region
+googleMapsOptions:
+    #what is the grid resolution of GM heights you want to obtain?
+    #heights are collected at this resolution     
+    gridResolution: 50
+    #extend the region by grid_extent_padding on each region side
+    gridExtentPadding: 500
+    #what is the final resolution of the raster you want. should be same order of magnitude as 
+    #gridResolution_GM (it can be higher res - it is interpolated)
+    rasterResFinal: 25
 autoMouseClicker:
     useAutoMouseClicker: False
     progFullDir: C:\Users\Roof49\Documents\GitHub\googleEarthImageCollection\bin\MiniMouseMacro.exe
