@@ -26,8 +26,8 @@ writeHeightsRast = subprocess.Popen([RscriptLoc + str('Rscript.exe'), '--vanilla
 writeHeightsRast.wait()
 out, err = writeHeightsRast.communicate()
 if writeHeightsRast.returncode != 0:
-    raise(Exception('Error creating height raster. Process returned code ', writeHeightsRast.returncode, 
-                    ' with message: ', err))
+    raise(Exception('Error creating height raster. Process returned code ' + str(writeHeightsRast.returncode) +
+                    ' with message: '+ err))
 #%%
 #import data 
 runs = os.listdir('googleEarthOut')
@@ -139,7 +139,6 @@ print('extracting all height values from raster')
 for i in ['central', 'r1sl', 'r2sl', 'r1sr', 'r2sr']:
     imgMeta[i+'_elev'] = imgMeta[i].apply(lambda x: getRasterPointHeight(x, gmHeights, heightBand))
 #%%
-imgMeta = imgMeta.iloc[:]
 print('Adjusting view domain point positions based on elevation')
 # create a plane using two nearest point- find intersection between line from camera to point
 # and plane to adjust point for height
