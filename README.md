@@ -36,7 +36,7 @@ with get-pip.py found in this repository.
 Make sure you have PROJ, get it via osgeo: http://download.osgeo.org/osgeo4w/osgeo4w-setup-x86_64.exe
 Then install packages:
 ```
-C:/Python27/Scripts/pip.exe install numpy==1.16.5 pandas==0.24.2 pyyaml==5.1.2 pykml==0.1.3 lxml==4.4.1 pyproj==1.9.6
+C:/Python27/Scripts/pip.exe install numpy==1.16.5 pandas==0.24.2 pyyaml==5.1.2 pykml==0.1.3 lxml==4.4.1 pyproj==1.9.6 rasterio
  ```
  
 ### Install R packages
