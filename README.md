@@ -47,6 +47,13 @@ devtools::install_version("RJSONIO", version = '1.3-1.2')
 
 ## Usage
 
+Make sure you can run powershell. In admin powershell type:
+
+```
+set-executionpolicy unrestricted
+```
+yes to all (A)
+
 ### Install a region
 Run install.bat to create a new directory structure to store images for a given region. These appear as a subdirectory in the *regions* folder.
 
