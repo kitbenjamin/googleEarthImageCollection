@@ -321,10 +321,16 @@ def camToGround(angles, heights):
 # uses the distance from the camera and its angle to calculate the x, y (easting, northing) of the point
 def convToCartesian(x, y, cDistance, theta):
     return x + cDistance*np.cos(np.radians(theta)),  y + cDistance*np.sin(np.radians(theta))
+#%% 
+def getRasterPointHeight(pointToExtract, gmHeights, heightBand):
+    #extract the raster point value of point
+    row, col = gmHeights.index(pointToExtract[0], pointToExtract[1])
+    pointHeight = heightBand[int(row), int(col)]
+    return(pointHeight)
 #%%
-def conv_lonlat(df, series, index, pointString):
-    df.at[index, pointString +'_lat'] = myProj(series[pointString][0], series[pointString][1], inverse = True)[1]
-    df.at[index, pointString +'_lon'] = myProj(series[pointString][0], series[pointString][1], inverse = True)[0]
+def convToLonlat(point, myProj):
+    lat, lon = myProj(point[0], point[1], inverse = True)
+    return([lat,lon])
 #%%
 #method from: http://geomalgorithms.com/a05-_intersect-1.html
 #cheers: https://gist.github.com/TimSC/8c25ca941d614bf48ebba6b473747d72
@@ -368,10 +374,14 @@ def compCentZ(point1, point2, point3, central):
 def createKML(df, run, adjusted):
     for i, row in df.iterrows():
         if adjusted == True:
-            lon1, lat1 = myProj(row['r1sl_adjusted'][0], row['r1sl_adjusted'][1], inverse = True)
-            lon2, lat2 = myProj(row['r1sr_adjusted'][0], row['r1sr_adjusted'][1], inverse = True)
-            lon3, lat3 = myProj(row['r2sl_adjusted'][0], row['r2sl_adjusted'][1], inverse = True)
-            lon4, lat4 = myProj(row['r2sr_adjusted'][0], row['r2sr_adjusted'][1], inverse = True)
+            lon1 = row['r1sl_adjusted_latlon'][0]
+            lat1 = row['r1sl_adjusted_latlon'][1]
+            lon2 = row['r1sr_adjusted_latlon'][0]
+            lat2 = row['r1sr_adjusted_latlon'][1]
+            lon3 = row['r2sl_adjusted_latlon'][0]
+            lat3 = row['r2sl_adjusted_latlon'][1]
+            lon4 = row['r2sr_adjusted_latlon'][0]
+            lat4 = row['r2sr_adjusted_latlon'][1]
             
             coordinates =   (str(lon1)+','+str(lat1)+','+ str(row['r1sl_adjusted'][2] + 5) +' '+
                             str(lon3)+','+str(lat3)+','+ str(row['r2sl_adjusted'][2] + 5) +' '+
@@ -379,14 +389,14 @@ def createKML(df, run, adjusted):
                             str(lon2)+','+str(lat2)+','+ str(row['r1sr_adjusted'][2] + 5))
             color = '#a00000ff'
         else:
-            lon1 = row['r1sl_lon']
-            lat1 = row['r1sl_lat']
-            lon2 = row['r1sr_lon']
-            lat2 = row['r1sr_lat']
-            lon3 = row['r2sl_lon']
-            lat3 = row['r2sl_lat']
-            lon4 = row['r2sr_lon']
-            lat4 = row['r2sr_lat']
+            lon1 = row['r1sl_latlon'][0]
+            lat1 = row['r1sl_latlon'][1]
+            lon2 = row['r1sr_latlon'][0]
+            lat2 = row['r1sr_latlon'][1]
+            lon3 = row['r2sl_latlon'][0]
+            lat3 = row['r2sl_latlon'][1]
+            lon4 = row['r2sr_latlon'][0]
+            lat4 = row['r2sr_latlon'][1]
             
             coordinates =   (str(lon1)+','+str(lat1)+','+ str(float(row['r1sl_elev']) + 5) +' '+
                             str(lon3)+','+str(lat3)+','+ str(float(row['r2sl_elev']) + 5) +' '+

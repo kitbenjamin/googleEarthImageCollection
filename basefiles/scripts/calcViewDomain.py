@@ -12,11 +12,22 @@ import numpy as np
 import subprocess
 import os
 import math
+import rasterio
 #%%
-# get all the required functions
+# execute the functions file
 execfile('scripts/functions.py')
 # get the input parameters
 execfile('scripts/input_params.py')
+#%%
+#create the height raster usig google maps api 
+print('creating height raster')
+writeHeightsRast = subprocess.Popen([RscriptLoc + str('Rscript.exe'), '--vanilla', 'scripts/writeASLraster.R'], 
+                                     stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+writeHeightsRast.wait()
+out, err = writeHeightsRast.communicate()
+if writeHeightsRast.returncode != 0:
+    raise(Exception('Error creating height raster. Process returned code ' + str(writeHeightsRast.returncode) +
+                    ' with message: '+ err))
 #%%
 #import data 
 runs = os.listdir('googleEarthOut')
@@ -114,92 +125,31 @@ imgMeta = imgMeta.drop([u'cDistance', u'theta', u'r1Distance', u'r2Distance', u'
                    u'r2Y', u'l', u'drY', u'drX', u'dr', u'angleL', u'L', u'dS1', u'dS2',
                    u'theta2r', u'theta2l', 'centralX', 'centralY', 'r1slX', 'r1slY', 'r2slX', 'r2slY', 
                    'r1srX', 'r1srY', 'r2srX', 'r2srY'], axis = 1)
-
 #%%
-# get the latitude and longitude of each point
-imgMeta2 = imgMeta.iloc[:]
-for i, row in imgMeta2.iterrows():
-    conv_lonlat(imgMeta2, row, i, 'central')
-    conv_lonlat(imgMeta2, row, i, 'r1sl')
-    conv_lonlat(imgMeta2, row, i, 'r2sl')
-    conv_lonlat(imgMeta2, row, i, 'r1sr')
-    conv_lonlat(imgMeta2, row, i, 'r2sr')
+#read in heights raster
+gmHeightsPath = os.path.join('metaData', 'GM_heights.tif')
+if os.path.exists(gmHeightsPath):
+    gmHeights = rasterio.open(os.path.join('metaData', 'GM_heights.tif'))
+else:
+    raise(Exception('GM_heights.tif has not been created'))
+#get the height band
+heightBand = gmHeights.read(1)
 #%%
-# get only lats lons to use as args for R script
-latlons = imgMeta2.loc[:,'central_lat':'r2sr_lon'].values
-latlons = [str(item) for sublist in latlons for item in sublist]
-#%%
-print('Getting elevations from gooogle API: ' + str(int(len(latlons)/2))+' coordinates to process')
-# the original command to call r script
-popenCMD = [RscriptLoc + str('Rscript.exe'), '--vanilla', '--no-save', 'scripts/getPointHeight.R']
-# 408 is approximately the maximum number of args that can be input to the r script 
-nIts = int(math.ceil(len(latlons)/408))
-# call r script to get heights of each point- must be looped in chunks of less that 408 
-output = ''
-for i in range(nIts):
-    if (len(latlons) - ((i+1)*408)) > 0:
-        popenCMDwArgs = popenCMD + latlons[(i)*408:((i + 1) * 408)] + [str(i)]
-        coRetrieved = str(((i+1)*408)/2)
-    else:
-        popenCMDwArgs = popenCMD + latlons[(i)*408:] + [str(i)]
-        coRetrieved = str(int(len(latlons)/2))
-
-        
-    getHeights = subprocess.Popen(popenCMDwArgs, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True)
-    out, err = getHeights.communicate()
-    output = output + out
-    print(coRetrieved + ' coordinate elevations retrieved')
-
-#%%
-# decode 
-outsplit = output.decode('ascii').splitlines()
-elevations = pd.DataFrame(columns = ['central_elev', 'r1sl_elev', 'r2sl_elev', 'r1sr_elev', 
-                                     'r2sr_elev'])
-
-#extract just the elevations
-n = 0
-elevs = []
-for i in range(int(len(outsplit)/4)):
-    #namesplit = outsplit[n].replace('$', '').split('_')
-    #point = namesplit[0] +'_elev'
-    #index = int(namesplit[1])
-    
-    elev = outsplit[n+2].split()
-    elevs.append(elev)
-    #elevations.at[index, point] = float(elev)    
-    n += 4
-#%%
-elevs = np.array(elevs)
-elevs.shape = (int(len(elevs)/5), 15)
-coordIdx = [0,1,3,4,6,7,9,10,12,13]
-elevIdx = [2,5,8,11,14]
-elevations = []
-for i in range(len(elevs)):
-    noDP = []
-    for n in elevs[i][coordIdx]:
-        try:
-           noDP.append(len(n.split('.')[1]))
-        except:
-           noDP.append(0)
-    assertSameCoords(imgMeta2, elevs, i, noDP)
-    elevations.append(elevs[i][elevIdx])
-elevations_DF = pd.DataFrame(elevations, columns = ['central_elev', 'r1sl_elev', 'r2sl_elev', 'r1sr_elev', 'r2sr_elev'])
-
-#%%
-# add elevation to other data
-imgMeta3 = pd.concat([imgMeta2, elevations_DF], axis = 1)
+print('extracting all height values from raster')
+for i in ['central', 'r1sl', 'r2sl', 'r1sr', 'r2sr']:
+    imgMeta[i+'_elev'] = imgMeta[i].apply(lambda x: getRasterPointHeight(x, gmHeights, heightBand))
 #%%
 print('Adjusting view domain point positions based on elevation')
 # create a plane using two nearest point- find intersection between line from camera to point
 # and plane to adjust point for height
-imgMeta3.insert(len(imgMeta3.columns), 'r1sl_adjusted', 'None')
-imgMeta3.insert(len(imgMeta3.columns), 'r1sr_adjusted', 'None')
-imgMeta3.insert(len(imgMeta3.columns), 'r2sl_adjusted', 'None')
-imgMeta3.insert(len(imgMeta3.columns), 'r2sr_adjusted', 'None')
-imgMeta3.insert(len(imgMeta3.columns), 'zDif_r1sl_r2sr', 'None')
-imgMeta3.insert(len(imgMeta3.columns), 'zDif_r1sr_r2sl', 'None')
+imgMeta.insert(len(imgMeta.columns), 'r1sl_adjusted', 'None')
+imgMeta.insert(len(imgMeta.columns), 'r1sr_adjusted', 'None')
+imgMeta.insert(len(imgMeta.columns), 'r2sl_adjusted', 'None')
+imgMeta.insert(len(imgMeta.columns), 'r2sr_adjusted', 'None')
+imgMeta.insert(len(imgMeta.columns), 'zDif_r1sl_r2sr', 'None')
+imgMeta.insert(len(imgMeta.columns), 'zDif_r1sr_r2sl', 'None')
 
-for i, r in imgMeta3.iterrows():
+for i, r in imgMeta.iterrows():
     #ensure all as arrays
     pointA = np.array(np.append(r['r1sl'], r['r1sl_elev'])).astype(float)
     pointB = np.array(np.append(r['r1sr'], r['r1sr_elev'])).astype(float)
@@ -218,12 +168,12 @@ for i, r in imgMeta3.iterrows():
     r2sl_adj = getPlaneAdjPoint(pointC, pointD, pointA, cam)
     r2sr_adj = getPlaneAdjPoint(pointD, pointB, pointC, cam)
 
-    imgMeta3.at[i, 'r1sl_adjusted'] = r1sl_adj
-    imgMeta3.at[i,'r1sr_adjusted'] = r1sr_adj
-    imgMeta3.at[i,'r2sl_adjusted'] = r2sl_adj
-    imgMeta3.at[i,'r2sr_adjusted'] = r2sr_adj
-    imgMeta3.at[i,'zDif_r1sl_r2sr'] = zDif_r1sl_r2sr
-    imgMeta3.at[i,'zDif_r1sr_r2sl'] = zDif_r1sr_r2sl
+    imgMeta.at[i, 'r1sl_adjusted'] = r1sl_adj
+    imgMeta.at[i,'r1sr_adjusted'] = r1sr_adj
+    imgMeta.at[i,'r2sl_adjusted'] = r2sl_adj
+    imgMeta.at[i,'r2sr_adjusted'] = r2sr_adj
+    imgMeta.at[i,'zDif_r1sl_r2sr'] = zDif_r1sl_r2sr
+    imgMeta.at[i,'zDif_r1sr_r2sl'] = zDif_r1sr_r2sl
     
 #%%
 print('Creating view domain KML files')
@@ -232,34 +182,39 @@ for i in runs:
     if os.path.exists('kmlFiles/viewDomains/'+i) == False:
         os.makedirs('kmlFiles/viewDomains/'+i)
 #%%
+# get the latitude and longitude of each point
+pointCols = ['central', 'r1sl', 'r2sl', 'r1sr', 'r2sr', 'r1sl_adjusted',
+             'r2sl_adjusted', 'r1sr_adjusted', 'r2sr_adjusted']
+for i in pointCols:
+    imgMeta[i+'_latlon'] = imgMeta[i].apply(lambda x: convToLonlat(x, myProj))
+#%%
 #create kml files showing swath of each image
-imgMeta3Group = imgMeta3.groupby('run')
-for name, data in imgMeta3Group:
+imgMetaGroup = imgMeta.groupby('run')
+for name, data in imgMetaGroup:
     createKML(data, name, adjusted = True)
     createKML(data, name, adjusted = False)
-
-    
 #%%
 # add elevation into point list
-for i, row in imgMeta3.iterrows():
+for i, row in imgMeta.iterrows():
     row['central'].append(float(row['central_elev']))
     row['r1sl'].append(float(row['r1sl_elev']))
     row['r1sr'].append(float(row['r1sr_elev']))
     row['r2sl'].append(float(row['r2sl_elev']))
     row['r2sr'].append(float(row['r2sr_elev']))
 #%%
-conditions = [(np.array(abs(imgMeta3.zDif_r1sl_r2sr) > 15) &  np.array(abs(imgMeta3.zDif_r1sr_r2sl > 15)))]
+conditions = [(np.array(abs(imgMeta.zDif_r1sl_r2sr) > 15) &  np.array(abs(imgMeta.zDif_r1sr_r2sl > 15)))]
 outputs = [1]
 # if height dif of > 15m between theoretical and real central point 
-imgMeta3['topography_flag'] = np.select(conditions, outputs)
+imgMeta['topography_flag'] = np.select(conditions, outputs)
 #%%
 #drop unneeded columns
-imgMeta3 = imgMeta3.drop([u'central_lat', u'central_lon', u'central_elev', u'r1sl_lat', u'r1sl_lon', u'r2sl_lat', u'r2sl_lon',
-                       u'r1sr_lat', u'r1sr_lon', u'r2sr_lat', u'r2sr_lon', u'r1sl_elev',
-                       u'r2sl_elev', u'r1sr_elev', u'r2sr_elev', u'zDif_r1sl_r2sr', u'zDif_r1sr_r2sl'], axis = 1)
+imgMeta = imgMeta.drop([u'central_elev', u'r1sl_elev', u'r2sl_elev', u'r1sr_elev', u'r2sr_elev', u'central_latlon', 
+                        u'r1sl_latlon', u'r2sl_latlon', u'r1sr_latlon', u'r2sr_latlon',
+                        u'r2sl_adjusted_latlon', u'r1sr_adjusted_latlon', u'r2sr_adjusted_latlon', 
+                        u'r1sl_adjusted_latlon', u'zDif_r1sl_r2sr', u'zDif_r1sr_r2sl'], axis = 1)
 # 
 #%%
 # write to a csv 
-imgMeta3.to_csv('imageInterval/imageViewDomains.csv')
+imgMeta.to_csv('imageInterval/imageViewDomains.csv')
 #%%
 print('Process complete')
