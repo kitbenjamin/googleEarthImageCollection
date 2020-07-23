@@ -225,16 +225,9 @@ def user_rerun_decide(endStatus):
         print('Google Earth crashed, it shall now be reopened and movie maker can be re-run from the point of the crash')
         
     if endStatus == '"timedout"':
-        finish = raw_input('Google Earth timed out, was the movie maker finished? [y/n] ')
-        if finish == 'y':
-            rerun = False
-            print('Google Earth will not be opened again')
-        elif finish == 'n':
-            rerun = True
-            remove_last_image()
-            print('Google Earth will be reopened and movie maker can be re-run from the point of the timeout')
-        else:
-            print( 'unrecognised input, assuming movie maker unfinished. Google Earth will be reopened.')
+        rerun = True
+        remove_last_image()
+        print('Google Earth timed out, it shall now be reopened and movie maker can be re-run from the point of the crash')
     return rerun
 #%%
 def get_toBeDoneNext(toBeDone, n):

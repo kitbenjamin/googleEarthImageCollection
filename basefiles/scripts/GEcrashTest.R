@@ -10,7 +10,9 @@ kmlPath <-  args[2]
 #print(paste('The KML file is: ', kmlPath))
 timeout <- args[3]
 #print(paste('Time google earth will run before timeout: ', timeout))
-timeout = as.numeric(timeout)
+timeout <- as.numeric(timeout)
+
+if (is.na(timeout)) stop("timeout is NA")
 
 #Open google earth with kml file
 print('Opening google earth')
@@ -18,10 +20,10 @@ p <- process$new(command = GEexe, kmlPath)
 p_ps <- p$as_ps_handle()
 PID <- ps::ps_pid(p_ps)
 #print(paste("GE process ID is:", PID))
-
+tStart <- Sys.time()
 # loop until timeout reached
 for (i in 1:(timeout)) {
-  Sys.sleep(0.5)
+  Sys.sleep(1)
   #test if crashed
   outRaw <- system(paste0("powershell -command (Get-Process -Id ", PID, ").Responding"), intern = TRUE)
   outBool <- ifelse(outRaw == "True", 1, 0)
@@ -34,13 +36,13 @@ for (i in 1:(timeout)) {
     endStatus = 'aborted'
     break
   #if crashed
-  } else if (outRaw != "True"){ 
+  } else if (outRaw != "True") { 
     print('crash detected')
     print(paste('Google earth ended at ', Sys.time() ))
     endStatus = 'crashed'
     break
   #if timeout reached 
-  } else if (i == timeout) {
+  } else if ((Sys.time() - tStart) > timeout) {
     print('Timeout reached')
     endStatus = 'timedout'
     p$kill_tree()
