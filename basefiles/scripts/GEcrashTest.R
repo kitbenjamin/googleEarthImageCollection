@@ -22,8 +22,9 @@ PID <- ps::ps_pid(p_ps)
 #print(paste("GE process ID is:", PID))
 tStart <- Sys.time()
 # loop until timeout reached
-for (i in 1:(timeout)) {
-  Sys.sleep(1)
+for (i in 1:(timeout * 2)) {
+  Sys.sleep(0.5)
+  tDiff_secs <- as.numeric(difftime(Sys.time(), tstart, units = "secs"))
   #test if crashed
   outRaw <- system(paste0("powershell -command (Get-Process -Id ", PID, ").Responding"), intern = TRUE)
   outBool <- ifelse(outRaw == "True", 1, 0)
@@ -32,7 +33,7 @@ for (i in 1:(timeout)) {
   #If user closed GE
   if (length(status) == 0) {
     print('Google earth ended')
-    print(paste0('seconds remaining before timeout:', timeout - i))
+    print(paste0('time since started:', tDiff_secs))
     endStatus = 'aborted'
     break
   #if crashed
@@ -42,7 +43,7 @@ for (i in 1:(timeout)) {
     endStatus = 'crashed'
     break
   #if timeout reached 
-  } else if ((Sys.time() - tStart) > timeout) {
+  } else if (tDiff_secs > timeout) {
     print('Timeout reached')
     endStatus = 'crashed'
     p$kill_tree()
