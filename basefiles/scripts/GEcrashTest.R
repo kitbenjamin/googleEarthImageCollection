@@ -44,7 +44,7 @@ for (i in 1:(timeout)) {
   #if timeout reached 
   } else if ((Sys.time() - tStart) > timeout) {
     print('Timeout reached')
-    endStatus = 'timedout'
+    endStatus = 'crashed'
     p$kill_tree()
     break
   } 
