@@ -166,7 +166,7 @@ def gen_kml(KMLname, toBeDone, n, imageInterval):
     kmlPath =  wd + '\\kmlFiles\\'+KMLname+'.kml'
     return kmlPath
 #%%
-def run_google_earth(kmlPath):
+def run_google_earth(kmlPath, nToDo):
 
     import time
     #TODO: add here a check to see if it is the first run. if so, don't run run_clicker_macro()
@@ -175,7 +175,7 @@ def run_google_earth(kmlPath):
         MCprocess = run_clicker_macro()
 
      #open google earth and check for google earth crash
-    crashTest = subprocess.Popen([RscriptLoc + str('Rscript.exe'), '--vanilla', '--no-save', 'scripts/GEcrashTest.R', GEdir, kmlPath, str(GEtimeout)],
+    crashTest = subprocess.Popen([RscriptLoc + str('Rscript.exe'), '--vanilla', '--no-save', 'scripts/GEcrashTest.R', GEdir, kmlPath, str(GEtimeout), str(nToDo)],
                                  stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True)
     
     if autoMouseClicker_use_macro_bool:
@@ -254,15 +254,18 @@ def get_GE_images(KMLname, toBeDone, n, imageInterval, is_rerun = False):
     
     kmlPath = gen_kml(KMLname,toBeDone, n, imageInterval)
     
-    endStatus = run_google_earth(kmlPath)
-    
-    rerun = user_rerun_decide(endStatus)
+    endStatus = run_google_earth(kmlPath, len(toBeDone))
     
     toBeDoneNext = get_toBeDoneNext(toBeDone, n)
     
     # move images 
     moveImagesToRun(n)
-                        
+    
+    if endStatus == '"finished"':
+        rerun = False
+    else:
+        rerun = user_rerun_decide(endStatus)
+          
     return rerun, toBeDoneNext 
 #%%
 def rerun_get_GE_images(KMLname, imgTab, n, imageInterval, ps_crash = False):
@@ -276,6 +279,7 @@ def rerun_get_GE_images(KMLname, imgTab, n, imageInterval, ps_crash = False):
         n += 1
         while rerun == True:
             rerun, toBeDone = get_GE_images(KMLname, toBeDone, n, imageInterval, is_rerun = True)
+        
             n += 1 #for naming new chunk table and kml
             if rerun != True:
                 break
