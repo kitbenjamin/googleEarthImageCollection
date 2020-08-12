@@ -8,9 +8,10 @@ GEexe <- args[1]
 #print(paste('Google Earth location: ', GEexe))
 kmlPath <-  args[2]
 #print(paste('The KML file is: ', kmlPath))
-timeout <- args[3]
+timeout <- as.numeric(args[3])
 #print(paste('Time google earth will run before timeout: ', timeout))
-timeout <- as.numeric(timeout)
+nImagesToDo <- as.numeric(args[4])
+
 
 if (is.na(timeout)) stop("timeout is NA")
 
@@ -25,6 +26,15 @@ tStart <- Sys.time()
 for (i in 1:(timeout * 2)) {
   Sys.sleep(1)
   tDiff_fromStart <- as.numeric(difftime(Sys.time(), tStart, units = "secs"))
+  #test if finished
+  nImagesCreated <- length(list.files(path = 'googleEarthOut', pattern = 'movie-\\d{0,6}.png$')) 
+  # + 1 because of stray image that gets created at the end
+  if (nImagesCreated == nImagesToDo | nImagesCreated - 1 == nImagesToDo){
+    print('All images captured')
+    endStatus = 'finished'
+    p$kill_tree()
+    break
+  }
   #test if crashed
   outRaw <- system(paste0("powershell -command (Get-Process -Id ", PID, ").Responding"), intern = TRUE)
   outBool <- ifelse(outRaw == "True", 1, 0)
