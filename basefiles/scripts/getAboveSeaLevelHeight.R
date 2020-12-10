@@ -1,5 +1,5 @@
 rawHeightAboveSeaLevelHeightFromGoogleAPI <- function(WGS84lat, WGS84lon, return.call = "json", 
-                                                      apiKey = "AIzaSyDiklf_BgSg67hfNzrJXEWeNcgrOXQzRGY",
+                                                      apiKey = "XXXX",
                                                       verbose = FALSE){
   suppressWarnings(suppressMessages(require(RCurl)))
   suppressWarnings(suppressMessages(require(RJSONIO)))
@@ -21,7 +21,7 @@ formatHeightAboveSeaLevelHeightFromGoogleAPI <- function(heightJSON){
 
 
 getHeightAboveSeaLevelFromGoogleAPI <- function(WGS84lat, WGS84lon, return.call = "json", 
-                                                apiKey = "AIzaSyDiklf_BgSg67hfNzrJXEWeNcgrOXQzRGY",
+                                                apiKey = "XXXX",
                                                 verbose = FALSE){
   
   heightJSON <- rawHeightAboveSeaLevelHeightFromGoogleAPI(WGS84lat, WGS84lon)
@@ -30,7 +30,7 @@ getHeightAboveSeaLevelFromGoogleAPI <- function(WGS84lat, WGS84lon, return.call 
 
 
 GM_aslheight_api_call_chunk <- function(twoDlatlons, return.call = "json", 
-                                        apiKey = "AIzaSyDiklf_BgSg67hfNzrJXEWeNcgrOXQzRGY",
+                                        apiKey = "XXXX",
                                         verbose = FALSE, latlonDigits = 7){
   
   suppressWarnings(suppressMessages(require(RCurl)))
